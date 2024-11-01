@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map with Bios</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Leaflet JS library -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map and set its view to the USA with a zoom level
+        const map = L.map('map').setView([37.8, -96], 4); // Center of USA
+
+        // Add the map tiles (using OpenStreetMap as an example)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Define data for each location with coordinates and bio
+        const locations = [
+            {
+                name: "John Doe",
+                bio: "John is a physicist specializing in astrophysics and works on quantum mechanics.",
+                coords: [34.0522, -118.2437] // Los Angeles, CA
+            },
+            {
+                name: "Jane Smith",
+                bio: "Jane is a data scientist focused on machine learning and big data analytics.",
+                coords: [40.7128, -74.0060] // New York, NY
+            },
+            {
+                name: "Alex Kim",
+                bio: "Alex is an engineer working in sustainable energy and materials science.",
+                coords: [41.8781, -87.6298] // Chicago, IL
+            }
+            // Add more entries here as needed
+        ];
+
+        // Add markers to the map
+        locations.forEach(location => {
+            const marker = L.marker(location.coords).addTo(map);
+            marker.bindPopup(`<strong>${location.name}</strong><br>${location.bio}`);
+        });
+    </script>
+</body>
+</html>
