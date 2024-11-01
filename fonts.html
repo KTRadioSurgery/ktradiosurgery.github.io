@@ -3,31 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@900&family=Roboto:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Open+Sans:wght@400&family=EB+Garamond&display=swap" rel="stylesheet">
+    <title>Tatebe Lab Logo</title>
     <style>
-        .logo {
-            font-family: 'Lato', sans-serif;
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .logo-text {
+            font-family: 'EB Garamond', serif;
             font-size: 3rem;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(to right, #006400, #228b22);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #006400; /* Dark Green */
+            letter-spacing: 2px;
+            margin-bottom: 10px;
         }
-        .tagline {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            font-weight: 400;
-            color: #555;
-            text-align: center;
-            display: block;
-            margin-top: 10px;
+        .accent-graphic {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            margin: 20px 0;
         }
-    </style>
-</head>
-<body>
-    <div class="logo">Tatebe Lab</div>
-    <span class="tagline">Exploring Innovations in Radiation Oncology & Physics</span>
-</body>
-</html>
+        .accent-graphic::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #006400;
+            transform: rotate(45deg);
+            top: 0;
+            left: 0;
+        }
+        .accent-graphic::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 2px;
+            background-color: #006400;
+        }
+        .accent-graphic .line-top-left,
+        .accent-graphic .line-bottom-left {
+            content: '';
+            position: absolute;
+            height: 2px;
+            width: 20px;
+            background-color: #006400;
+        }
+        .accent-graphic .line-top-left {
+            top: -20px;
+            left: 0;
+        }
+        .accent-graphic.text manajista
