@@ -3,36 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parent Page with Map Sidebar on the Right</title>
+    <title>Centered Page with Dynamic Sidebar Map</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        /* Basic styling for the layout */
+        /* Basic reset and flex styling */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: row-reverse; /* Place sidebar on the right */
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Centered container with max-width for responsiveness */
+        #container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            border: 1px solid #ddd;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Sidebar styling */
         #sidebar {
-            width: 60%; /* Twice as wide as before */
-            height: 100vh;
+            width: 60%;
+            height: 100%;
             overflow-y: auto;
             border-left: 2px solid #ddd;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
         }
 
         /* Main content styling */
         #main-content {
-            width: 40%; /* Adjusted to balance with sidebar */
+            width: 40%;
             padding: 20px;
-            height: 100vh;
             overflow-y: auto;
             background-color: #f9f9f9;
         }
@@ -57,17 +66,22 @@
 </head>
 <body>
 
-    <!-- Sidebar with the map -->
-    <div id="sidebar">
-        <div id="map"></div>
-    </div>
+    <!-- Centered container -->
+    <div id="container">
+        
+        <!-- Main content area -->
+        <div id="main-content">
+            <h1>Welcome to the Interactive Map Page</h1>
+            <p>This page includes a map sidebar on the right, where you can explore different locations and see details about individuals in various cities.</p>
+            <p>Additional content can go here, providing more context about the people, the project, or anything else relevant to the page’s purpose.</p>
+            <!-- Add more content here as desired -->
+        </div>
 
-    <!-- Main content area -->
-    <div id="main-content">
-        <h1>Welcome to the Interactive Map Page</h1>
-        <p>This page includes a map sidebar on the right, where you can explore different locations and see details about individuals in various cities.</p>
-        <p>Additional content can go here, providing more context about the people, the project, or anything else relevant to the page’s purpose.</p>
-        <!-- Add more content here as desired -->
+        <!-- Sidebar with the map -->
+        <div id="sidebar">
+            <div id="map"></div>
+        </div>
+
     </div>
 
     <!-- Leaflet JS library -->
