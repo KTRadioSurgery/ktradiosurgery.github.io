@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive World Map with Bios</title>
+    <title>Interactive World Map with Photos</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
             height: 100vh;
             width: 100%;
+        }
+        .popup-content {
+            text-align: center;
+        }
+        .popup-photo {
+            width: 100px;
+            height: auto;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -20,7 +28,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Initialize the map and set its view to show the world
-        const map = L.map('map').setView([20, 0], 2); // Centered on the equator, zoomed out
+        const map = L.map('map').setView([20, 0], 2);
 
         // Add the map tiles (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -28,34 +36,56 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Define data for each location with coordinates and bio
+        // Define data for each location, including the photo URL
         const locations = [
             { 
                 name: "John Doe", 
                 bio: "Physicist specializing in astrophysics.", 
-                coords: [34.0522, -118.2437] // Los Angeles, CA
+                photo: "https://via.placeholder.com/100", // Replace with actual photo URLs
+                coords: [34.0522, -118.2437]
             },
             { 
                 name: "Jane Smith", 
                 bio: "Data scientist focused on big data.", 
-                coords: [40.7128, -74.0060] // New York, NY
+                photo: "https://via.placeholder.com/100", 
+                coords: [40.7128, -74.0060]
             },
             { 
                 name: "Alex Kim", 
                 bio: "Engineer in sustainable energy.", 
-                coords: [41.8781, -87.6298] // Chicago, IL
+                photo: "https://via.placeholder.com/100", 
+                coords: [41.8781, -87.6298]
             },
             {
                 name: "Leah Cohen",
                 bio: "Biotechnologist working on medical advancements.",
-                coords: [32.0853, 34.7818] // Tel Aviv, Israel
+                photo: "https://via.placeholder.com/100", 
+                coords: [32.0853, 34.7818]
             }
         ];
 
-        // Add markers to the map
+        // Add markers with popups including photo and bio
         locations.forEach(location => {
             const marker = L.marker(location.coords).addTo(map);
-            marker.bindPopup(`<strong>${location.name}</strong><br>${location.bio}`);
+            
+            // Bind a popup with photo and bio
+            marker.bindPopup(`
+                <div class="popup-content">
+                    <strong>${location.name}</strong><br>
+                    <img src="${location.photo}" alt="${location.name}'s photo" class="popup-photo"><br>
+                    ${location.bio}
+                </div>
+            `);
+
+            // Show popup on mouseover
+            marker.on('mouseover', function () {
+                this.openPopup();
+            });
+
+            // Close popup on mouseout
+            marker.on('mouseout', function () {
+                this.closePopup();
+            });
         });
     </script>
 </body>
