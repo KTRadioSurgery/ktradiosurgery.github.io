@@ -3,17 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive World Map with Photos</title>
+    <title>Parent Page with Map Sidebar</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        #map {
+        /* Basic styling for the layout */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        /* Sidebar styling */
+        #sidebar {
+            width: 30%; /* Adjust as needed */
             height: 100vh;
+            overflow-y: auto;
+            border-right: 2px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        /* Main content styling */
+        #main-content {
+            width: 70%; /* Adjust as needed */
+            padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        /* Map styling */
+        #map {
+            flex-grow: 1;
+            height: 100%;
             width: 100%;
         }
+
         .popup-content {
             text-align: center;
         }
+
         .popup-photo {
             width: 100px;
             height: auto;
@@ -22,7 +55,19 @@
     </style>
 </head>
 <body>
-    <div id="map"></div>
+
+    <!-- Sidebar with the map -->
+    <div id="sidebar">
+        <div id="map"></div>
+    </div>
+
+    <!-- Main content area -->
+    <div id="main-content">
+        <h1>Welcome to the Interactive Map Page</h1>
+        <p>This page includes a map sidebar where you can explore different locations and see details about individuals in various cities.</p>
+        <p>Additional content can go here, providing more context about the people, the project, or anything else relevant to the page’s purpose.</p>
+        <!-- Add more content here as desired -->
+    </div>
 
     <!-- Leaflet JS library -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -36,31 +81,31 @@
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Define data for each location, including the photo URL
+        // Define data for each location with coordinates, bio, and photo URL
         const locations = [
             { 
                 name: "John Doe", 
                 bio: "Physicist specializing in astrophysics.", 
-                photo: "https://www.rushu.rush.edu/sites/default/files/legacy/D%27Souza_Leah%20150x150%20comp.jpg", // Replace with actual photo URLs
-                coords: [34.0522, -118.2437]
+                photo: "https://via.placeholder.com/100", 
+                coords: [34.0522, -118.2437] // Los Angeles, CA
             },
             { 
                 name: "Jane Smith", 
                 bio: "Data scientist focused on big data.", 
                 photo: "https://via.placeholder.com/100", 
-                coords: [40.7128, -74.0060]
+                coords: [40.7128, -74.0060] // New York, NY
             },
             { 
                 name: "Alex Kim", 
                 bio: "Engineer in sustainable energy.", 
                 photo: "https://via.placeholder.com/100", 
-                coords: [41.8781, -87.6298]
+                coords: [41.8781, -87.6298] // Chicago, IL
             },
             {
                 name: "Leah Cohen",
                 bio: "Biotechnologist working on medical advancements.",
                 photo: "https://via.placeholder.com/100", 
-                coords: [32.0853, 34.7818]
+                coords: [32.0853, 34.7818] // Tel Aviv, Israel
             }
         ];
 
