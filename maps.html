@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Map with Bios</title>
+    <title>Interactive World Map with Bios</title>
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
@@ -18,10 +19,10 @@
     <!-- Leaflet JS library -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Initialize the map and set its view to the USA with a zoom level
-        const map = L.map('map').setView([37.8, -96], 4); // Center of USA
+        // Initialize the map and set its view to show the world
+        const map = L.map('map').setView([20, 0], 2); // Centered on the equator, zoomed out
 
-        // Add the map tiles (using OpenStreetMap as an example)
+        // Add the map tiles (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: '© OpenStreetMap contributors'
@@ -29,22 +30,26 @@
 
         // Define data for each location with coordinates and bio
         const locations = [
-            {
-                name: "John Doe",
-                bio: "John is a physicist specializing in astrophysics and works on quantum mechanics.",
+            { 
+                name: "John Doe", 
+                bio: "Physicist specializing in astrophysics.", 
                 coords: [34.0522, -118.2437] // Los Angeles, CA
             },
-            {
-                name: "Jane Smith",
-                bio: "Jane is a data scientist focused on machine learning and big data analytics.",
+            { 
+                name: "Jane Smith", 
+                bio: "Data scientist focused on big data.", 
                 coords: [40.7128, -74.0060] // New York, NY
             },
-            {
-                name: "Alex Kim",
-                bio: "Alex is an engineer working in sustainable energy and materials science.",
+            { 
+                name: "Alex Kim", 
+                bio: "Engineer in sustainable energy.", 
                 coords: [41.8781, -87.6298] // Chicago, IL
+            },
+            {
+                name: "Leah Cohen",
+                bio: "Biotechnologist working on medical advancements.",
+                coords: [32.0853, 34.7818] // Tel Aviv, Israel
             }
-            // Add more entries here as needed
         ];
 
         // Add markers to the map
