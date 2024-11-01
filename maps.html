@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parent Page with Map Sidebar</title>
+    <title>Parent Page with Map Sidebar on the Right</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
@@ -14,14 +14,15 @@
             height: 100%;
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: row-reverse; /* Place sidebar on the right */
         }
 
         /* Sidebar styling */
         #sidebar {
-            width: 30%; /* Adjust as needed */
+            width: 60%; /* Twice as wide as before */
             height: 100vh;
             overflow-y: auto;
-            border-right: 2px solid #ddd;
+            border-left: 2px solid #ddd;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
@@ -29,7 +30,7 @@
 
         /* Main content styling */
         #main-content {
-            width: 70%; /* Adjust as needed */
+            width: 40%; /* Adjusted to balance with sidebar */
             padding: 20px;
             height: 100vh;
             overflow-y: auto;
@@ -64,7 +65,7 @@
     <!-- Main content area -->
     <div id="main-content">
         <h1>Welcome to the Interactive Map Page</h1>
-        <p>This page includes a map sidebar where you can explore different locations and see details about individuals in various cities.</p>
+        <p>This page includes a map sidebar on the right, where you can explore different locations and see details about individuals in various cities.</p>
         <p>Additional content can go here, providing more context about the people, the project, or anything else relevant to the page’s purpose.</p>
         <!-- Add more content here as desired -->
     </div>
