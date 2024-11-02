@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Map with Links and Centered on the US</title>
+    <title>Interactive Map with Alumni List</title>
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
@@ -28,42 +28,16 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        /* Left sidebar styling */
-        #left-sidebar {
-            width: 20%;
-            padding: 10px;
-            overflow-y: auto;
-            border-right: 2px solid #ddd;
-            background-color: #f9f9f9;
-        }
-
-        /* Sidebar list styling */
-        .person-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .person-list li {
-            margin: 10px 0;
-            cursor: pointer;
-            color: #007bff;
-            text-decoration: underline;
-        }
-
-        .person-list li:hover {
-            color: #0056b3;
-        }
-
         /* Main content styling */
         #main-content {
-            width: 30%;
+            width: 50%;
             padding: 20px;
             overflow-y: auto;
             background-color: #f9f9f9;
             height: 90vh; /* Align main content with container height */
         }
 
-        /* Sidebar with map styling */
+        /* Right sidebar with map styling */
         #sidebar {
             width: 50%;
             height: 95vh;
@@ -90,16 +64,29 @@
             height: auto;
             border-radius: 5px;
         }
+
+        /* Sidebar list styling */
+        .person-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .person-list li {
+            margin: 10px 0;
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+        .person-list li:hover {
+            color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
     <!-- Centered container -->
     <div id="container">
-        
-		<!-- Left Sidebar with List of People 
-        <div id="left-sidebar">
-		-->
 
         <!-- Main content area -->
         <div id="main-content">
@@ -109,13 +96,13 @@
                 </div>
             </header>
             <h1>Welcome to the Rush Radiation Oncology Alumni Page</h1>
-            <p>This page includes a map showing where our alumni are practicing. You can see details about each provider by mousing over each location.</p>
-            <!-- Additional content -->
-			            <h3>Our Alumni</h3>
+            <p>This page includes a map showing where our alumni are practicing. You can see details about each provider by mousing over each location or selecting their name from the list below.</p>
+
+            <!-- Alumni List -->
+            <h3>Our Alumni</h3>
             <ul class="person-list">
                 <!-- List populated by JavaScript -->
             </ul>
-        </div>
         </div>
 
         <!-- Sidebar with the map -->
@@ -169,7 +156,7 @@
             }
         ];
 
-        // Populate the list in the sidebar and set up markers on the map
+        // Populate the list in the main-content area and set up markers on the map
         const listContainer = document.querySelector('.person-list');
         locations.forEach((location, index) => {
             // Create a marker for each location
@@ -182,12 +169,12 @@
                 </div>
             `);
 
-            // Add list item to sidebar
+            // Add list item to main content
             const listItem = document.createElement('li');
             listItem.textContent = location.name;
             listItem.addEventListener('click', () => {
                 // Center map on selected location and open popup
-                map.setView(location.coords, 8);
+                map.setView(location.coords, 6);
                 marker.openPopup();
             });
             listContainer.appendChild(listItem);
