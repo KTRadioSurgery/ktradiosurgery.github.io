@@ -21,28 +21,37 @@
         /* Centered container with max-width for responsiveness */
         #container {
             display: flex;
-            width: 75%;
+            width: 90%;
             max-width: none;
             height: 90vh;
             border: 1px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-		/* banner styling */
-        .banner img {
-            width: 100%;
-            height: auto;
+        /* Left sidebar styling */
+        #left-sidebar {
+            width: 20%;
+            padding: 10px;
+            overflow-y: auto;
+            border-right: 2px solid #ddd;
+            background-color: #f9f9f9;
         }
 
-        /* Sidebar styling */
-        #sidebar {
-            width: 70%;
-            height: 95vh; /* Set map height to 50% of the viewport height */
-            overflow-y: auto;
-            border-left: 2px solid #ddd;
-            display: flex;
-            justify-content: center;
-			align-items: center;
+        /* Sidebar list styling */
+        .person-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .person-list li {
+            margin: 10px 0;
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+        .person-list li:hover {
+            color: #0056b3;
         }
 
         /* Main content styling */
@@ -52,6 +61,17 @@
             overflow-y: auto;
             background-color: #f9f9f9;
             height: 90vh; /* Align main content with container height */
+        }
+
+        /* Sidebar with map styling */
+        #sidebar {
+            width: 50%;
+            height: 95vh;
+            overflow-y: auto;
+            border-left: 2px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         /* Map styling */
@@ -76,26 +96,25 @@
 
     <!-- Centered container -->
     <div id="container">
-		
+        
+        <!-- Left Sidebar with List of People -->
+        <div id="left-sidebar">
+            <h3>Our Alumni</h3>
+            <ul class="person-list">
+                <!-- List populated by JavaScript -->
+            </ul>
+        </div>
+
         <!-- Main content area -->
         <div id="main-content">
-			<header>
-					<div class="banner">
-					<img src="RadOncBanner.png" alt="Banner Image" width="100%">
-				</div>
-			</header>
+            <header>
+                <div class="banner">
+                    <img src="RadOncBanner.png" alt="Banner Image" width="100%">
+                </div>
+            </header>
             <h1>Welcome to the Rush Radiation Oncology Alumni Page</h1>
             <p>This page includes a map showing where our alumni are practicing. You can see details about each provider by mousing over each location.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ac neque at ipsum ultrices vestibulum. Aliquam malesuada volutpat nisi vitae varius. Etiam varius leo vulputate dolor consequat elementum. In nibh sapien, consectetur nec venenatis a, faucibus ac elit. Fusce id porta neque. Duis leo odio, volutpat non libero quis, vulputate vulputate ante. Donec eu commodo turpis. Maecenas venenatis velit massa, a porttitor nibh auctor tempor. Nullam vestibulum elit interdum tortor fringilla, vel vehicula velit pellentesque.</p>
-
-			<p>Ut ac diam convallis, tristique tortor a, blandit ex. Sed at mauris ex. Donec urna felis, tristique vestibulum lorem fringilla, suscipit congue metus. Aenean lobortis ligula id sem consectetur egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla ultricies pellentesque erat nec auctor. Nam ac tincidunt massa. Nunc sit amet dictum arcu. Curabitur blandit nisl eget sem luctus pellentesque. Nam velit arcu, consequat nec egestas at, volutpat eu eros. Phasellus eget viverra urna. Nulla non erat gravida, viverra lacus venenatis, convallis turpis. Phasellus blandit nulla a auctor placerat.</p>
-
-			<p>In pretium ante nisl, hendrerit euismod elit elementum sollicitudin. Sed laoreet mi ac feugiat feugiat. Nunc quis egestas quam. Integer dictum, lorem eget condimentum convallis, eros nunc aliquet neque, non ultrices nisl nibh eu metus. Nulla eget laoreet ante. Etiam eu pulvinar diam, eu sagittis risus. Nulla sit amet lectus tellus. Integer nulla nunc, dictum quis dictum non, lacinia ac mi. Nulla tempor, mauris et lacinia mattis, ex felis lacinia sem, sed luctus nisi nulla non felis. Curabitur finibus, erat maximus tempus condimentum, magna nulla dapibus nulla, in iaculis magna nisi vel mauris. Mauris tempor in massa et ultricies. Phasellus mi turpis, tempus at nisi ac, convallis finibus nulla. Nunc vel tristique sapien. Nulla maximus quis neque a finibus.</p>
-
-			<p>Mauris non libero vel enim malesuada accumsan. Aliquam nec augue tincidunt, rhoncus sapien egestas, semper nibh. Maecenas malesuada ligula at ante vestibulum cursus. Sed vulputate nec justo in gravida. Quisque sagittis tortor id dui lacinia lacinia. Praesent laoreet sagittis nulla, at dapibus leo mattis tempus. Vestibulum rutrum turpis congue, feugiat neque eu, sodales augue. Integer eget dolor eu arcu venenatis tristique ut vel lacus. Suspendisse sodales bibendum justo. Aenean gravida elementum dignissim. Praesent et cursus nisl, dictum malesuada nisl.</p>
-
-			<p>Mauris sodales turpis non consectetur volutpat. Nam ultricies porta lectus sit amet dignissim. Integer fermentum ullamcorper auctor. Pellentesque vestibulum orci condimentum, posuere dui sit amet, bibendum est. Quisque fringilla dolor nec scelerisque porttitor. Nullam viverra laoreet laoreet. Nulla venenatis fermentum nulla, nec interdum orci lacinia quis. Integer sed nunc lobortis, rutrum mi nec, efficitur mi. Nullam vel varius purus. Fusce commodo ipsum lectus, et ultricies sem eleifend malesuada.</p>
-            <!-- Add more content here as desired -->
+            <!-- Additional content -->
         </div>
 
         <!-- Sidebar with the map -->
@@ -149,11 +168,11 @@
             }
         ];
 
-        // Add markers with popups including photo, bio, and click link
-        locations.forEach(location => {
+        // Populate the list in the sidebar and set up markers on the map
+        const listContainer = document.querySelector('.person-list');
+        locations.forEach((location, index) => {
+            // Create a marker for each location
             const marker = L.marker(location.coords).addTo(map);
-            
-            // Bind a popup with photo and bio
             marker.bindPopup(`
                 <div class="popup-content">
                     <strong>${location.name}</strong><br>
@@ -162,26 +181,16 @@
                 </div>
             `);
 
-            // Show popup on mouseover
-            marker.on('mouseover', function () {
-                this.openPopup();
+            // Add list item to sidebar
+            const listItem = document.createElement('li');
+            listItem.textContent = location.name;
+            listItem.addEventListener('click', () => {
+                // Center map on selected location and open popup
+                map.setView(location.coords, 8);
+                marker.openPopup();
             });
-
-            // Close popup on mouseout
-            marker.on('mouseout', function () {
-                this.closePopup();
-            });
-
-            // Add click event to redirect to individual's page
-            marker.on('click', function () {
-                window.open(location.url, '_blank');
-            });
+            listContainer.appendChild(listItem);
         });
     </script>
 </body>
 </html>
-
-
-
-
-        
