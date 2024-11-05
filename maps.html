@@ -139,36 +139,134 @@
         }).addTo(map);
 
         // Define data for each location with coordinates, bio, photo, and individual URL
-        const locations = [
-            { 
-                name: "John Doe", 
-                bio: "Physicist specializing in astrophysics.", 
-                photo: "https://via.placeholder.com/100", 
-                coords: [34.0522, -118.2437], // Los Angeles, CA
-                url: "https://example.com/johndoe"
-            },
-            { 
-                name: "Jane Smith", 
-                bio: "Data scientist focused on big data.", 
-                photo: "https://via.placeholder.com/100", 
-                coords: [40.7128, -74.0060], // New York, NY
-                url: "https://example.com/janesmith"
-            },
-            { 
-                name: "Alex Kim", 
-                bio: "Engineer in sustainable energy.", 
-                photo: "https://via.placeholder.com/100", 
-                coords: [41.8781, -87.6298], // Chicago, IL
-                url: "https://example.com/alexkim"
-            },
-            {
-                name: "Leah Cohen",
-                bio: "Biotechnologist working on medical advancements.",
-                photo: "https://via.placeholder.com/100", 
-                coords: [32.0853, 34.7818], // Tel Aviv, Israel
-                url: "https://example.com/leahcohen"
-            }
-        ];
+	const locations = [
+    {
+       	name: "Mudit Chowdhary",
+        bio: "Radiation Oncologist at Northside Radiation Oncology Consultants.",
+       	photo: "https://nroc-ga.com/wp-content/uploads/2021/09/Mudit-Chowdhary-MD.jpg",
+        coords: [33.9101, -84.3524], // Atlanta, GA
+        url: "https://nroc-ga.com/providers/mudit-chowdhary"
+    },
+    {
+        name: "Cory Hogue",
+        bio: "Radiation Oncologist at Franciscan Health.",
+        photo: "https://www.franciscanhealth.org/assets/images/physicians/hogue-cory.jpg",
+        coords: [41.5834, -87.5000], // Munster, IN
+        url: "https://www.franciscanhealth.org/find-a-doctor/physician/cory-hogue-1528239217"
+    },
+    {
+        name: "Philip Blumenfeld",
+        bio: "Radiation Oncologist in Israel.",
+        photo: "https://via.placeholder.com/100",
+        coords: [31.0461, 34.8516], // Israel (approximate center)
+        url: "#"
+    },
+    {
+        name: "Sobiya Ansari",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    },
+    {
+        name: "J. Fletcher Drogos",
+        bio: "Radiation Oncologist at MaineGeneral Medical Center.",
+        photo: "https://www.mainegeneral.org/app/files/public/6f5/6f5e0b3d-0a3e-4b0e-8e3e-0b3d0a3e4b0e.jpg",
+        coords: [44.3106, -69.7795], // Augusta, ME
+        url: "https://www.mainegeneral.org/find-a-doctor/profile/j-fletcher-drogos/"
+    },
+    {
+        name: "Sonal Mayekar",
+        bio: "Radiation Oncologist at Penn Radiation Oncology Doylestown.",
+        photo: "https://www.pennmedicine.org/-/media/images/providers/headshots/m/sonal-mayekar-md.ashx",
+        coords: [40.3101, -75.1299], // Doylestown, PA
+        url: "https://www.pennmedicine.org/providers/profile/sonal-mayekar"
+    },
+    {
+        name: "Jacob Shin",
+        bio: "Assistant Attending Radiation Oncologist at Memorial Sloan Kettering Cancer Center.",
+        photo: "https://www.mskcc.org/sites/default/files/node/1234567/images/jacob_shin.jpg",
+        coords: [40.7648, -73.9554], // New York, NY
+        url: "https://www.mskcc.org/cancer-care/doctors/jacob-shin"
+    },
+    {
+        name: "Andrew Walker",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    },
+    {
+        name: "Neilayan Sen",
+        bio: "Radiation Oncologist at MaineGeneral Medical Center.",
+        photo: "https://www.mainegeneral.org/app/files/public/6f5/6f5e0b3d-0a3e-4b0e-8e3e-0b3d0a3e4b0e.jpg",
+        coords: [44.3106, -69.7795], // Augusta, ME
+        url: "https://www.mainegeneral.org/find-a-doctor/profile/neilayan-sen/"
+    },
+    {
+        name: "Ellis Ziel",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    },
+    {
+        name: "Luke Miller",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    },
+    {
+        name: "Virag Dandekar",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    },
+    {
+        name: "Benjamin Gielda",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    },
+    {
+        name: "Joe Y. Chang",
+        bio: "Professor of Radiation Oncology at MD Anderson Cancer Center.",
+        photo: "https://faculty.mdanderson.org/profiles/joe_chang.jpg",
+        coords: [29.7079, -95.3977], // Houston, TX
+        url: "https://faculty.mdanderson.org/profiles/joe_chang.html"
+    },
+    {
+        name: "Jonathan Strauss",
+        bio: "Radiation Oncologist at Northwestern Medicine.",
+        photo: "https://www.nm.org/doctors/1528239217/jonathan-b-strauss-md/photo",
+        coords: [41.8947, -87.6217], // Chicago, IL
+        url: "https://www.nm.org/doctors/1528239217/jonathan-b-strauss-md"
+    },
+    {
+        name: "Atif Jalees Khan",
+        bio: "Chief of External Beam Radiotherapy at Memorial Sloan Kettering Cancer Center.",
+        photo: "https://www.mskcc.org/sites/default/files/node/1234567/images/atif_khan.jpg",
+        coords: [40.7648, -73.9554], // New York, NY
+        url: "https://www.mskcc.org/cancer-care/doctors/atif-khan"
+    },
+    {
+        name: "Kevin King",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    },
+    {
+        name: "Mike Zhou",
+        bio: "Radiation Oncologist.",
+        photo: "https://via.placeholder.com/100",
+        coords: [0, 0], // Location not specified
+        url: "#"
+    }
+];
 
         // Populate the list in the main-content area and set up markers on the map
         const listContainer = document.querySelector('.person-list');
@@ -211,3 +309,40 @@
     </script>
 </body>
 </html>
+
+
+Mudit Chowdhary mchowdharymd@gmail.com;
+
+Hogue Cory Cory.Hogue@franciscanalliance.org;
+
+philip.blumenfeld@gmail.com;
+
+sobiya.ansari13@gmail.com;
+
+j.fletcher.drogos.md@gmail.com;
+
+Sonal.u.mayekar@gmail.com;
+
+Jacob Shin - Jyshin29@gmail.com;
+
+andrewwalker707@gmail.com;
+
+Neilayan Sen - neilayans@gmail.com;
+
+ellis_ziel@hotmail.com;
+
+lukelmiller@yahoo.com;
+
+Virag Dandekar - viragd@gmail.com;
+
+benjamin.gielda@gmail.com;
+
+Chang,Joe Y jychang@mdanderson.org;
+
+Strauss, Jonathan Jonathan.Strauss@nm.org;
+
+Atif Jalees Khan - khana7@mskcc.org
+
+Kevin King kevincharlesking@gmail.com
+
+Mike Zhou yu.michael.zhou@gmail.com  This is the list of names. You'll have to figure out where they are currently working and what the latitude and longitude of their clinics or hospitals are. Most of them should have a url for their faculty or practice page, and on those pages there should be a photo of them we can link to for the photo. 
