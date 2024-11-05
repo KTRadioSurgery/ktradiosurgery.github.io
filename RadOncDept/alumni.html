@@ -293,7 +293,7 @@
             listItem.textContent = location.name;
             listItem.addEventListener('click', () => {
                 // Center map on selected location and open popup
-                map.setView(location.coords, 8);
+                map.setView(location.coords, 6);
                 marker.openPopup();
             });
             listContainer.appendChild(listItem);
