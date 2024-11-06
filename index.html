@@ -1,6 +1,12 @@
-﻿</style><!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -88,60 +94,40 @@
             margin-top: 2rem;
             width: 100%;
         }
-        #globe-container {
-            width: 150px;  /* Set your desired width */
-            height: 150px; /* Set your desired height */
-            overflow: hidden; /* Prevent anything from overflowing the container */
-            margin: 5px auto;  /* This centers the container horizontally */
-        }
-        #globe-container canvas {
-            width: 100%;
-            height: 100%;
-        }
-        .bembo-link {
-            font-family: 'EB Garamond', serif;
-        }
     </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    </style>
+</head>
 <body>
     <header>
-        
-        <div class="banner" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    <img src="banner3b.png" alt="Banner Image" style="width: 100%; height: auto;">
-</div>
+        <div class="banner">
+            <img src="banner3b.png" alt="Banner Image">
+        </div>
+        <img src="title.png" alt="Tatebe Lab Logo" style="max-width: 70%; height: auto;">
     </header>
-    
-    
-    </div>
+    <nav>
+        <ul>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#documents">Documents</a></li>
+            <li><a href="#research">Research Projects</a></li>
+            <li><a href="#members">Group Members</a></li>
+            <li><a href="#department">Rad Onc Dept</a></li>
+        </ul>
+    </nav>
     <div class="container">
-        <section id="tools" style="margin-left: 0; margin-right: auto; width: calc(100% - 1rem); padding-left: 0;">
-    
+        <section id="tools">
             <h2>Tools for the Radiation Oncologist</h2>
             <ul>
                 <li><a href="BEDcalc.html">BED Calculator</a> - Calculate the Biological Effective Dose (BED) for various fractionations and &alpha;/&beta; ratios.</li>
                 <li><a href="Treat.html">Clinical Setup Treatment Calculator</a> - A useful tool for treatment setups (for demonstration only).</li>
             </ul>
         </section>
-        <section id="documents" style="margin-right: 0; margin-left: auto; width: calc(100% - 1rem); padding-right: 0;">
-    
+        <section id="documents">
             <h2>Documents</h2>
             <ul>
                 <li><a href="publications/">Publications</a> - Browse through published research papers.</li>
                 <li><a href="whitepapers/">Whitepapers, Notes, & Manuals</a> - Notes and manuals on various research topics.</li>
             </ul>
         </section>
-        <div class="overlay-image" style="position: relative; width: 100%; text-align: right;">
-            <img src="DTI Diamond.png" alt="DTI Diamond" style="position: absolute; right: 0; top: -40px; min-width: 600px; height: auto; z-index: 2; max-width: 100%;">
-        </div>
-        </div>
-        <section id="research" style="margin-left: 0; margin-right: auto; width: calc(100% - 1rem); padding-left: 0;">
-    
+        <section id="research">
             <h2>Research Projects</h2>
             <ul>
                 <li>Novel Tensor Calculus Processing of Diffusion Tensor Imaging</li>
@@ -154,8 +140,7 @@
                 <li>Brachytherapy Innovations (applicator improvements and QA technologies)</li>
             </ul>
         </section>
-        <section id="members" style="margin-right: 0; margin-left: auto; width: calc(100% - 1rem); padding-right: 0;">
-    
+        <section id="members">
             <h2>Group Members</h2>
             <ul>
                 <li><a href="labgroup/">Meet Our Members</a></li>
@@ -166,17 +151,13 @@
                 <li><a href="https://www.rushu.rush.edu/faculty/stephan-munich-md">Stephan Munich, MD</a> - Associate Professor of Neurosurgery</li>
             </ul>
         </section>
-        <section id="department" style="margin-left: 0; margin-right: auto; width: calc(100% - 1rem); padding-left: 0;">
-    
+        <section id="department">
             <h2>RUMC Radiation Oncology Department Info</h2>
             <ul>
                 <li><a href="RadOncDept/pictures/">Department Events</a> - Photos from our departmental events.</li>
                 <li><a href="RadOncDept/alumni.html">Alumni List</a> - Where they are now.</li>
             </ul>
         </section>
-    </div>
-    <div id="globe-container" style="text-align: center; margin-top: 20px;">
-        <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=hXCNkBhpNTtCUc_Hw8UYWygoXH9hWMzzuxCVtrv9__Y"></script>
     </div>
     <footer>
         <p>© Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</p>
