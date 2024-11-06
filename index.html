@@ -10,202 +10,140 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
             margin: 0;
-            background-color: #f4f4f4;
+            padding: 0;
             color: #333;
         }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 0 20px;
-        }
         header {
-            background: #004E25;
+            background-color: #004E25;
             color: #fff;
-            padding: 2rem 0;
+            padding: 1rem 0;
             text-align: center;
-            position: relative;
-            z-index: 2;
         }
-        .banner img {
-            width: 100%;
-            height: auto;
-            position: relative;
-            z-index: 1;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            position: relative;
-            top: -40px;
-            z-index: 2;
+        nav {
+            background-color: #003B1A;
+            padding: 0.5rem 0;
         }
         nav ul {
             list-style: none;
+            margin: 0;
             padding: 0;
             display: flex;
-            gap: 15px;
             justify-content: center;
-            position: relative;
-            top: -20px;
-            z-index: 2;
         }
-        nav a {
+        nav ul li {
+            margin: 0 1rem;
+        }
+        nav ul li a {
             color: #fff;
             text-decoration: none;
             font-weight: bold;
         }
-        nav a:hover {
+        nav ul li a:hover {
             text-decoration: underline;
         }
-        .section {
-            width: 100%;
-            position: relative;
-        }
-        .section h2 {
-            text-align: center;
-            padding-top: 1rem;
-            margin: 0;
-        }
-        .section-content {
-            background: rgba(255, 255, 255, 0.95);
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            width: calc(100% - 20px);
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            position: relative;
-            z-index: 3;
+            padding: 1rem;
         }
-        .tools-section {
-            background: linear-gradient(135deg, #e0ffe0, #b0ffb0);
-            padding: 40px 0;
+        section {
+            padding: 2rem 0;
         }
-        .documents-section {
-            background: linear-gradient(135deg, #f0e0ff, #d0b0ff);
-            padding: 40px 0;
+        section:nth-of-type(odd) {
+            background-color: #f4f4f4;
         }
-        .research-section {
-            background: linear-gradient(135deg, #e0f7ff, #a0e7ff);
-            padding: 40px 0;
+        section:nth-of-type(even) {
+            background-color: #e0e0e0;
         }
-        .members-section {
-            background: linear-gradient(135deg, #ffe0e0, #ffb0b0);
-            padding: 40px 0;
+        h2 {
+            text-align: center;
+            color: #004E25;
         }
-        .department-section {
-            background: linear-gradient(135deg, #f7ffe0, #e7ffb0);
-            padding: 40px 0;
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            margin: 0.5rem 0;
+        }
+        ul li a {
+            color: #004E25;
+            text-decoration: none;
+        }
+        ul li a:hover {
+            text-decoration: underline;
         }
         footer {
-            text-align: center;
-            padding: 1rem;
-            background: #006400;
+            background-color: #003B1A;
             color: #fff;
-            margin-top: 20px;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
             width: 100%;
-        }
-        #globe-container {
-            width: 150px;
-            height: 150px;
-            overflow: hidden;
-            margin: 20px auto;
-            z-index: 3;
-        }
-        #globe-container canvas {
-            width: 100%;
-            height: 100%;
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="banner">
-            <img src="banner3b.png" alt="Banner Image">
-        </div>
-        <div class="logo">
-            <img src="title.png" alt="Tatebe Lab Logo" style="max-width: 70%; height: auto;">
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#tools" class="bembo-link">Tools</a></li>
-                <li><a href="#documents" class="bembo-link">Documents</a></li>
-                <li><a href="#research" class="bembo-link">Research Projects</a></li>
-                <li><a href="#members" class="bembo-link">Group Members</a></li>
-                <li><a href="#department" class="bembo-link">Rad Onc Dept</a></li>
-            </ul>
-        </nav>
+        <img src="title.png" alt="Tatebe Lab Logo" style="max-width: 70%; height: auto;">
     </header>
-
-    <main>
-        <section id="tools" class="section tools-section">
+    <nav>
+        <ul>
+            <li><a href="#tools">Tools</a></li>
+            <li><a href="#documents">Documents</a></li>
+            <li><a href="#research">Research Projects</a></li>
+            <li><a href="#members">Group Members</a></li>
+            <li><a href="#department">Rad Onc Dept</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <section id="tools">
             <h2>Tools for the Radiation Oncologist</h2>
-            <div class="section-content">
-                <ul>
-                    <li><a href="BEDcalc.html">BED Calculator</a> - Calculate the Biological Effective Dose (BED) for various fractionations and &alpha;/&beta; ratios.</li>
-                    <li><a href="Treat.html">Clinical Setup Treatment Calculator</a> - A useful tool for treatment setups (for demonstration only).</li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="BEDcalc.html">BED Calculator</a> - Calculate the Biological Effective Dose (BED) for various fractionations and &alpha;/&beta; ratios.</li>
+                <li><a href="Treat.html">Clinical Setup Treatment Calculator</a> - A useful tool for treatment setups (for demonstration only).</li>
+            </ul>
         </section>
-
-        <section id="documents" class="section documents-section">
+        <section id="documents">
             <h2>Documents</h2>
-            <div class="section-content">
-                <ul>
-                    <li><a href="publications/">Publications</a> - Browse through published research papers.</li>
-                    <li><a href="whitepapers/">Whitepapers, Notes, & Manuals</a> - Notes and manuals on various research topics.</li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="publications/">Publications</a> - Browse through published research papers.</li>
+                <li><a href="whitepapers/">Whitepapers, Notes, & Manuals</a> - Notes and manuals on various research topics.</li>
+            </ul>
         </section>
-
-        <section id="research" class="section research-section">
+        <section id="research">
             <h2>Research Projects</h2>
-            <div class="section-content">
-                <ul>
-                    <li>Novel Tensor Calculus Processing of Diffusion Tensor Imaging</li>
-                    <li>Brain Magnetic Resonance Elastography</li>
-                    <li>GammaTile Experience and Innovations</li>
-                    <li>Deep Learning Models with Radiology and Bioinformatic Data</li>
-                    <li>Natural Language Models for Patient Education</li>
-                    <li>MRI Brain Connectomics</li>
-                    <li>Radiosurgery Innovations (streamlining workflow, improving imaging, and refining dose constraints)</li>
-                    <li>Brachytherapy Innovations (applicator improvements and QA technologies)</li>
-                </ul>
-            </div>
+            <ul>
+                <li>Novel Tensor Calculus Processing of Diffusion Tensor Imaging</li>
+                <li>Brain Magnetic Resonance Elastography</li>
+                <li>GammaTile Experience and Innovations</li>
+                <li>Deep Learning Models with Radiology and Bioinformatic Data</li>
+                <li>Natural Language Models for Patient Education</li>
+                <li>MRI Brain Connectomics</li>
+                <li>Radiosurgery Innovations (streamlining workflow, improving imaging, and refining dose constraints)</li>
+                <li>Brachytherapy Innovations (applicator improvements and QA technologies)</li>
+            </ul>
         </section>
-
-        <section id="members" class="section members-section">
+        <section id="members">
             <h2>Group Members</h2>
-            <div class="section-content">
-                <ul>
-                    <li><a href="labgroup/">Meet Our Members</a></li>
-                    <li><a href="https://www.rushu.rush.edu/faculty/ken-tatebe-md-phd">Ken Tatebe, MD, PhD</a> - Assistant Professor of Radiation Oncology</li>
-                    <li><a href="https://www.rushu.rush.edu/faculty/thomas-kim-md">Thomas Kim, MD</a> - Assistant Professor of Radiation Oncology</li>
-                    <li><a href="https://www.rushu.rush.edu/faculty/zachary-grelewicz-phd">Zachary Grelewicz, PhD</a> - Assistant Professor of Radiation Oncology</li>
-                    <li><a href="https://www.rushu.rush.edu/faculty/jonathon-van-schelt-phd">Jonathon Van Schelt, PhD</a> - Assistant Professor of Radiation Oncology</li>
-                    <li><a href="https://www.rushu.rush.edu/faculty/stephan-munich-md">Stephan Munich, MD</a> - Associate Professor of Neurosurgery</li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="labgroup/">Meet Our Members</a></li>
+                <li><a href="https://www.rushu.rush.edu/faculty/ken-tatebe-md-phd">Ken Tatebe, MD, PhD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/thomas-kim-md">Thomas Kim, MD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/zachary-grelewicz-phd">Zachary Grelewicz, PhD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/jonathon-van-schelt-phd">Jonathon Van Schelt, PhD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/stephan-munich-md">Stephan Munich, MD</a> - Associate Professor of Neurosurgery</li>
+            </ul>
         </section>
-
-        <section id="department" class="section department-section">
+        <section id="department">
             <h2>RUMC Radiation Oncology Department Info</h2>
-            <div class="section-content">
-                <ul>
-                    <li><a href="RadOncDept/pictures/">Department Events</a> - Photos from our departmental events.</li>
-                    <li><a href="RadOncDept/alumni.html">Alumni List</a> - Where they are now.</li>
-                </ul>
-            </div>
+            <ul>
+                <li><a href="RadOncDept/pictures/">Department Events</a> - Photos from our departmental events.</li>
+                <li><a href="RadOncDept/alumni.html">Alumni List</a> - Where they are now.</li>
+            </ul>
         </section>
-    </main>
-
-    <div id="globe-container">
-        <script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=hXCNkBhpNTtCUc_Hw8UYWygoXH9hWMzzuxCVtrv9__Y"></script>
     </div>
-
     <footer>
         <p>© Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</p>
     </footer>
