@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<style>
+    #globe-container {
+      width: 150px;  /* Set your desired width */
+      height: 150px; /* Set your desired height */
+      overflow: hidden; /* Prevent anything from overflowing the container */
+	  margin: 20px auto;  /* This centers the container horizontally */
+    }
+    #globe-container canvas {
+      width: 100%;
+      height: 100%;
+    }
+	
+	    .bembo-link {
+        font-family: 'EB Garamond', serif;
+    }
+	</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="banner">
+                <img src="banner3b.png" alt="Banner Image" width="100%">
+            </div>
+			<br>
+            <div class="logo">
+                <img src="title.png" alt="Tatebe Lab Logo" style="max-width: 70%; height: auto;">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#tools" class="bembo-link">Tools</a></li>
+                    <li><a href="#documents" class="bembo-link">Documents</a></li>
+                    <li><a href="#research" class="bembo-link">Research Projects</a></li>
+                </ul>
+            </nav>
+	        <nav>
+                <ul>
+                    <li><a href="#members" class="bembo-link">Group Members</a></li>
+					<li><a href="#department" class="bembo-link">Rad Onc Dept</a></li>
+				</ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="about">
+                <h2>Welcome!</h2>
+                <p>Thank you for visiting our page! Here you'll find information about the group's research projects and various tools and writeups that may be of interest to those interested in neuro radiation oncology, physics, or data science.</p>
+                <p>This page is a work in progress, much like research itself. Feel free to reach out if you find anything interesting or have questions.</p>
+            </section>
+
+            <hr>
+
+            <section id="tools">
+                <h2>Tools for the Radiation Oncologist</h2>
+                <ul>
+                    <li><a href="BEDcalc.html">BED Calculator</a> - Calculate the Biological Effective Dose (BED) for various fractionations and &alpha;/&beta; ratios.</li>
+                    <li><a href="Treat.html">Clinical Setup Treatment Calculator</a> - A useful tool for treatment setups (for demonstration only).</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="documents">
+                <h2>Documents</h2>
+                <ul>
+                    <li><a href="publications/">Publications</a> - Browse through published research papers.</li>
+                    <li><a href="whitepapers/">Whitepapers, Notes, & Manuals</a> - Notes and manuals on various research topics.</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="research">
+                <h2 style="display: inline-block; vertical-align: middle;">Research Projects</h2> <img src="DTI Diamond.png" alt="Logo" style="height: 100px; vertical-align: middle; display: inline-block;">
+                <ul>
+                    <li>Novel Tensor Calculus Processing of Diffusion Tensor Imaging</li>
+                    <li>Brain Magnetic Resonance Elastography</li>
+                    <li>GammaTile Experience and Innovations</li>
+                    <li>Deep Learning Models with Radiology and Bioinformatic Data</li>
+                    <li>Natural Language Models for Patient Education</li>
+                    <li>MRI Brain Connectomics</li>
+                    <li>Radiosurgery Innovations (streamlining workflow, improving imaging, and refining dose constraints)</li>
+                    <li>Brachytherapy Innovations (applicator improvements and QA technologies)</li>
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="members">
+                <h2 style="display: inline-block; vertical-align: middle;">Group Members</h2> 
+                <ul>
+					<li><a href="labgroup/">Meet Our Members</a></li>
+				<ul>
+                    <li><a href="https://www.rushu.rush.edu/faculty/ken-tatebe-md-phd">Ken Tatebe, MD, PhD</a> - Assistant Professor of Radiation Oncology</li> 
+					<li><a href="https://www.rushu.rush.edu/faculty/thomas-kim-md">Thomas Kim, MD</a> - Assistant Professor of Radiation Oncology</li> 
+					<li><a href="https://www.rushu.rush.edu/faculty/zachary-grelewicz-phd">Zachary Grelewicz, PhD</a> - Assistant Professor of Radiation Oncology</li> 
+					<li><a href="https://www.rushu.rush.edu/faculty/jonathon-van-schelt-phd">Jonathon Van Schelt, PhD</a> - Assistant Professor of Radiation Oncology</li> 
+					<li><a href="https://www.rushu.rush.edu/faculty/stephan-munich-md">Stephan Munich, MD</a> - Associate Professor of Neurosurgery</li> 
+                </ul>
+            </section>
+
+            <hr>
+
+            <section id="department">
+                <h2>RUMC Radiation Oncology Department Info</h2>
+                <ul>
+                    <li><a href="RadOncDept/pictures/">Department Events</a> - Photos from our departmental events.</li>
+					<li><a href="RadOncDept/alumni.html">Alumni List</a> - Where they are now.</li>
+                </ul>
+            </section>
+        </main>
+
+		<div id="globe-container">
+			<script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=hXCNkBhpNTtCUc_Hw8UYWygoXH9hWMzzuxCVtrv9__Y"></script>
+		</div>
+
+
+        <footer>
+            
+        </footer>
+    </div>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 0 20px;
+        }
+        header {
+            background: #004E25;
+            color: #fff;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        .banner img {
+            width: 100%;
+            height: auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        main {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #006400;
+            color: #fff;
+            margin-top: 20px;
+        }
+    </style>
+</body>
+</html>
