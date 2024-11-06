@@ -20,6 +20,15 @@
             padding: 1rem 0;
             text-align: center;
         }
+        .banner {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .banner img {
+            width: 100%;
+            height: auto;
+        }
         nav {
             background-color: #003B1A;
             padding: 0.5rem 0;
@@ -99,24 +108,24 @@
 </head>
 <body>
     <header>
-		<div style="background-color: #004E25; color: #fff; padding: 1rem 0; text-align: center;">
+      <div style="background-color: #004E25; color: #fff; padding: 1rem 0; text-align: center;">
             
         </div>
         <img src="title.png" alt="Tatebe Lab Logo" style="max-width: 70%; height: auto;">
     </header>
     
-	<nav>
-		<ul>
-			<li><a href="#tools">Tools</a></li>
-			<li><a href="#documents">Documents</a></li>
-			<li><a href="#research">Research Projects</a></li>
-			<li><a href="#members">Group Members</a></li>
-			<li><a href="#department">Rad Onc Dept</a></li>
-		</ul>
-	</nav>
+		<nav>
+			<ul>
+				<li><a href="#tools">Tools</a></li>
+				<li><a href="#documents">Documents</a></li>
+				<li><a href="#research">Research Projects</a></li>
+				<li><a href="#members">Group Members</a></li>
+				<li><a href="#department">Rad Onc Dept</a></li>
+			</ul>
+		</nav>
 	
-	<div>
-		<img src="banner3b.png" alt="Banner Image" style="width: 100%; height: auto; margin: 0; padding: 0; display:flex; justify-content: center; align-items: center; max-width: 1200px; position: relative; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+	<div class="banner container" style="box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+		<img src="banner3b.png" alt="Banner Image" style="width: 100%; height: auto; margin: 0; padding: 0; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
 	</div>
 	
     <div class="container">
