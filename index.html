@@ -24,7 +24,6 @@
             width: 100%;
             overflow: hidden;
             position: relative;
-			margin: 20px 20px auto auto; /* top right bottom left */
         }
         .banner img {
             width: 100%;
@@ -95,37 +94,28 @@
             margin-top: 2rem;
             width: 100%;
         }
-		#globe-container {
-			width: 150px;  /* Set your desired width */
-			height: 150px; /* Set your desired height */
-			overflow: hidden; /* Prevent anything from overflowing the container */
-			margin: 5px auto;  /* This centers the container horizontally */
-		}
-		#globe-container canvas {
-			width: 100%;
-			height: 100%;
-		}
-		.bembo-link {
-			font-family: 'EB Garamond', serif;
-		}
-    </style>
+    
+        #globe-container {
+            width: 150px;  /* Set your desired width */
+            height: 150px; /* Set your desired height */
+            overflow: hidden; /* Prevent anything from overflowing the container */
+            margin: 5px auto;  /* This centers the container horizontally */
+        }
+        .bembo-link {
+            font-family: 'EB Garamond', serif;
+        }
 </head>
 <body>
     <header>
-        <div class="banner">
-            <img src="banner3b.png" alt="Banner Image">
+        <div style="background-color: #004E25; color: #fff; padding: 1rem 0; text-align: center;">
+            
         </div>
         <img src="title.png" alt="Tatebe Lab Logo" style="max-width: 70%; height: auto;">
     </header>
-    <nav>
-        <ul>
-            <li><a href="#tools">Tools</a></li>
-            <li><a href="#documents">Documents</a></li>
-            <li><a href="#research">Research Projects</a></li>
-            <li><a href="#members">Group Members</a></li>
-            <li><a href="#department">Rad Onc Dept</a></li>
-        </ul>
-    </nav>
+    
+    <div class="banner container">
+        <img src="banner3b.png" alt="Banner Image" style="width: 100%; height: auto;">
+    </div>
     <div class="container">
         <section id="tools">
             <h2>Tools for the Radiation Oncologist</h2>
