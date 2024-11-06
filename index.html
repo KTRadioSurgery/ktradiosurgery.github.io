@@ -94,6 +94,16 @@
             margin-top: 2rem;
             width: 100%;
         }
+	    #globe-container {
+			width: 150px;  /* Set your desired width */
+			height: 150px; /* Set your desired height */
+			overflow: hidden; /* Prevent anything from overflowing the container */
+			margin: 20px auto;  /* This centers the container horizontally */
+		}
+		#globe-container canvas {
+			width: 100%;
+			height: 100%;
+		}
     </style>
 </head>
 <body>
@@ -126,6 +136,7 @@
                 <li><a href="Treat.html">Clinical Setup Treatment Calculator</a> - A useful tool for treatment setups (for demonstration only).</li>
             </ul>
         </section>
+
         <section id="documents">
             <h2>Documents</h2>
             <ul>
@@ -133,6 +144,7 @@
                 <li><a href="whitepapers/">Whitepapers, Notes, & Manuals</a> - Notes and manuals on various research topics.</li>
             </ul>
         </section>
+
         <section id="research">
             <h2>Research Projects</h2>
             <ul>
@@ -146,6 +158,7 @@
                 <li>Brachytherapy Innovations (applicator improvements and QA technologies)</li>
             </ul>
         </section>
+
         <section id="members">
             <h2>Group Members</h2>
             <ul>
@@ -157,6 +170,7 @@
                 <li><a href="https://www.rushu.rush.edu/faculty/stephan-munich-md">Stephan Munich, MD</a> - Associate Professor of Neurosurgery</li>
             </ul>
         </section>
+
         <section id="department">
             <h2>RUMC Radiation Oncology Department Info</h2>
             <ul>
@@ -165,6 +179,11 @@
             </ul>
         </section>
     </div>
+	
+	<div id="globe-container">
+		<script type="text/javascript" id="clstr_globe" src="//clustrmaps.com/globe.js?d=hXCNkBhpNTtCUc_Hw8UYWygoXH9hWMzzuxCVtrv9__Y"></script>
+	</div>
+	
     <footer>
         <p>© Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</p>
     </footer>
