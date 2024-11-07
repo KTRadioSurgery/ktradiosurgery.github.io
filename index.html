@@ -107,10 +107,19 @@
 		#dti-diamond {
             position: absolute;
             bottom: -50px; /* Adjust to position it partly overlapping */
-            right: 10%; /* Adjust to place it over both sections */
+            right: 30%; /* Adjust to place it over both sections */
             width: 200px; /* Set desired width */
             z-index: 2; /* Make sure it's on top of the boxes */
         }
+		 
+		/* Media Query for Smaller Screens */
+		@media (max-width: 768px) {
+			#dti-diamond {
+				position: static; /* Allow it to flow with the content */
+				width: 100px; /* Reduce the size for smaller screens */
+				display: block; /* Ensure it is still visible */
+				margin: 20px auto; /* Center it with margin */
+			}
     </style>
 </head>
 <body>
