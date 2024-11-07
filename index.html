@@ -64,15 +64,6 @@
         }
         section:nth-of-type(odd) {
 			position: relative;
-			margin-left: -50vw; /* Shift the section to the left by half the viewport width */
-			padding-left: 50vw; /* Add back the padding to keep content aligned correctly */
-			width: calc(100% + 50vw); /* Extend the width to the original plus the shift */
-			border-top-left-radius: 0; /* Remove the top-left rounded corner */
-			border-bottom-left-radius: 0; /* Remove the bottom-left rounded corner */
-			background-color: #f4f4f4; /* Light gray background to differentiate */
-		}
-        section:nth-of-type(even) {
-			position: relative;
 			max-width: 1200px;
 			width: calc(100% + 5vw); /* Extend to the left beyond the viewport edge */
 			margin-left: -50vw; /* Shift the left edge beyond the viewport */
@@ -80,6 +71,17 @@
 			border-bottom-left-radius: 0; /* Remove the bottom-left rounded corner */
 			background-color: #f4f4f4; /* Light gray background for odd sections */
 			padding-left: calc(4rem + 50vw); /* Adjust padding so content starts properly */
+		}
+        section:nth-of-type(even) {
+			position: relative;
+			max-width: 1200px;
+			width: calc(100% + 50vw); /* Extend to the left beyond the viewport edge */
+			margin-right: 50%;
+			<!-- margin-right: -50vw; /* Shift the left edge beyond the viewport */ -->
+			border-top-right-radius: 0; /* Remove the top-left rounded corner */
+			border-bottom-right-radius: 0; /* Remove the bottom-left rounded corner */
+			background-color: #e0e0e0; /* Dark gray background for even sections */
+			padding-right: calc(4rem + 50vw); /* Adjust padding so content starts properly */
         }
         h2 {
             text-align: center;
