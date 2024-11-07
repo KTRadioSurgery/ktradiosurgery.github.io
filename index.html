@@ -65,22 +65,23 @@
         section:nth-of-type(odd) {
 			position: relative;
 			max-width: 1200px;
-			width: calc(100% + 0vw -4rem); /* Extend to the left beyond the viewport edge */
-			margin-left: calc(-50vw - 5rem); /* Shift the left edge beyond the viewport */
+			margin-left: calc(-50vw - 2rem); /* Shift the left edge beyond the viewport; and shift to align right edge with banner; and shift to account for padding */
+			width: calc(100% + 0vw - 6rem); /* Extend to the left beyond the viewport edge; then shift back so box aligns with right banner after text shift */
+			padding-left: calc(6rem + 50vw); /* Adjust padding so content starts properly; i.e. indent text */			
 			border-top-left-radius: 0; /* Remove the top-left rounded corner */
 			border-bottom-left-radius: 0; /* Remove the bottom-left rounded corner */
 			background-color: #f4f4f4; /* Light gray background for odd sections */
-			padding-left: calc(8rem + 50vw); /* Adjust padding so content starts properly */
+			
 		}
         section:nth-of-type(even) {
 			position: relative;
 			max-width: 1200px;
-			width: calc(100% + 0vw -4rem); /* Extend to the left beyond the viewport edge */
-			margin-left: calc(-50vw - 8rem); /* Shift the left edge beyond the viewport */
-			border-top-left-radius: 0; /* Remove the top-left rounded corner */
-			border-bottom-left-radius: 0; /* Remove the bottom-left rounded corner */
-			background-color: #f4f4f4; /* Light gray background for odd sections */
-			padding-left: calc(8rem + 50vw); /* Adjust padding so content starts properly */
+			width: calc(50vw + 14rem); /* Extend to the right beyond the viewport edge; then shift so the title is centered */
+			border-top-right-radius: 0; /* Remove the top-left rounded corner */
+			border-bottom-right-radius: 0; /* Remove the bottom-left rounded corner */
+			background-color: #e0e0e0; /* Dark gray background for even sections */
+			padding-right: 50vw; /* Make sure gray extends all the way right */
+			padding-left: calc(4rem); /* Adjust padding so content starts properly */
         }
         h2 {
             text-align: center;
