@@ -65,7 +65,7 @@
         section:nth-of-type(odd) {
 			position: relative;
 			max-width: 1200px;
-			width: calc(65% + 30vw); /* Extend to the left beyond the viewport edge */
+			width: calc(5% + 30vw); /* Extend to the left beyond the viewport edge */
 			margin-left: -50vw; /* Shift the left edge beyond the viewport */
 			border-top-left-radius: 0; /* Remove the top-left rounded corner */
 			border-bottom-left-radius: 0; /* Remove the bottom-left rounded corner */
@@ -73,7 +73,15 @@
 			padding-left: calc(2rem + 50vw); /* Adjust padding so content starts properly */
 		}
         section:nth-of-type(even) {
-            background-color: #e0e0e0;
+			position: relative;
+			max-width: 1200px;
+			width: calc(65% + 30vw); /* Extend to the left beyond the viewport edge */
+			margin-right: -50vw; /* Shift the left edge beyond the viewport */
+			border-top-right-radius: 0; /* Remove the top-left rounded corner */
+			border-bottom-right-radius: 0; /* Remove the bottom-left rounded corner */
+			background-color: #e0e0e0; /* Dark gray background for even sections */
+			padding-right: calc(2rem + 50vw); /* Adjust padding so content starts properly */
+            
         }
         h2 {
             text-align: center;
