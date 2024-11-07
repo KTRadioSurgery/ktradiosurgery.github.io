@@ -18,8 +18,8 @@
             background-color: #f0f0f0;
         }
         .mri-container {
-            width: 600px;
-            height: 600px;
+            width: 100px; /* Matches the size of each sub-image in the mosaic */
+            height: 100px; /* Matches the size of each sub-image in the mosaic */
             overflow: hidden;
             position: relative;
         }
@@ -27,7 +27,6 @@
             position: absolute;
             top: 0;
             left: 0;
-            transition: transform 0.1s ease;
         }
     </style>
 </head>
@@ -42,33 +41,41 @@
             const mosaicImage = document.getElementById('mri-mosaic');
             const container = document.querySelector('.mri-container');
 
-            // Get the dimensions of the mosaic image and container
-            const containerWidth = container.clientWidth;
-            const containerHeight = container.clientHeight;
+            // Dimensions of each slice in the mosaic
+            const SLICE_WIDTH = 100;
+            const SLICE_HEIGHT = 100;
+
+            // Total number of slices in the mosaic (assuming an 8x8 grid)
+            const slicesPerRow = 8;
+            const slicesPerColumn = 8;
 
             let currentSliceX = 0;
             let currentSliceY = 0;
 
-            // Adjust the scrolling increment for each scroll event
-            const SCROLL_INCREMENT = 100; // Adjust based on mosaic arrangement (e.g., width of each slice)
-
             container.addEventListener('wheel', (event) => {
                 event.preventDefault();
-                // Determine the scroll direction
                 if (event.deltaY > 0) {
-                    currentSliceY -= SCROLL_INCREMENT;
+                    // Scroll to the next slice
+                    currentSliceX += SLICE_WIDTH;
+                    if (currentSliceX >= slicesPerRow * SLICE_WIDTH) {
+                        currentSliceX = 0;
+                        currentSliceY += SLICE_HEIGHT;
+                    }
                 } else {
-                    currentSliceY += SCROLL_INCREMENT;
+                    // Scroll to the previous slice
+                    currentSliceX -= SLICE_WIDTH;
+                    if (currentSliceX < 0) {
+                        currentSliceX = (slicesPerRow - 1) * SLICE_WIDTH;
+                        currentSliceY -= SLICE_HEIGHT;
+                    }
                 }
 
-                // Prevent moving out of the bounds of the mosaic
-                const maxOffsetX = -(mosaicImage.width - containerWidth);
-                const maxOffsetY = -(mosaicImage.height - containerHeight);
-                currentSliceY = Math.min(0, Math.max(maxOffsetY, currentSliceY));
-                currentSliceX = Math.min(0, Math.max(maxOffsetX, currentSliceX));
+                // Ensure we don't go out of bounds
+                currentSliceX = Math.max(0, Math.min(currentSliceX, (slicesPerRow - 1) * SLICE_WIDTH));
+                currentSliceY = Math.max(0, Math.min(currentSliceY, (slicesPerColumn - 1) * SLICE_HEIGHT));
 
-                // Update the position of the mosaic
-                mosaicImage.style.transform = `translate(${currentSliceX}px, ${currentSliceY}px)`;
+                // Update the position of the mosaic to display the correct slice
+                mosaicImage.style.transform = `translate(${-currentSliceX}px, ${-currentSliceY}px)`;
             });
         });
     </script>
