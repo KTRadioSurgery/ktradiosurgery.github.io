@@ -60,9 +60,6 @@
                     if (currentSliceX >= slicesPerRow * SLICE_WIDTH) {
                         currentSliceX = 0;
                         currentSliceY += SLICE_HEIGHT;
-                        if (currentSliceY >= slicesPerColumn * SLICE_HEIGHT) {
-                            currentSliceY = 0; // Cycle back to the first row
-                        }
                     }
                 } else {
                     // Scroll to the previous slice
@@ -70,11 +67,12 @@
                     if (currentSliceX < 0) {
                         currentSliceX = (slicesPerRow - 1) * SLICE_WIDTH;
                         currentSliceY -= SLICE_HEIGHT;
-                        if (currentSliceY < 0) {
-                            currentSliceY = (slicesPerColumn - 1) * SLICE_HEIGHT; // Cycle back to the last row
-                        }
                     }
                 }
+
+                // Ensure we don't go out of bounds
+                currentSliceX = Math.max(0, Math.min(currentSliceX, (slicesPerRow - 1) * SLICE_WIDTH));
+                currentSliceY = Math.max(0, Math.min(currentSliceY, (slicesPerColumn - 1) * SLICE_HEIGHT));
 
                 // Update the position of the mosaic to display the correct slice
                 mosaicImage.style.transform = `translate(${-currentSliceX}px, ${-currentSliceY}px)`;
