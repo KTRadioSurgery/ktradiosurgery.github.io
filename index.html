@@ -63,14 +63,13 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         section:nth-of-type(odd) {
-            background-color: #f4f4f4;
-		    position: relative; /* Set position to relative for more control */
-			margin-left: -50vw; /* Extend to the far left of the viewport */
-			width: calc(100vw + 50vw); /* Make section extend beyond the left edge of the viewport */
-			padding-left: calc(2rem + 50vw); /* Add padding back so the content starts where expected */
+			position: relative;
+			width: calc(100% + 50vw); /* Extend to the left beyond the viewport edge */
+			margin-left: -50vw; /* Shift the left edge beyond the viewport */
 			border-top-left-radius: 0; /* Remove the top-left rounded corner */
 			border-bottom-left-radius: 0; /* Remove the bottom-left rounded corner */
-			box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1); /* Adjust shadow for visual balance */
+			background-color: #f4f4f4; /* Light gray background for odd sections */
+			padding-left: calc(2rem + 50vw); /* Adjust padding so content starts properly */
 		}
         section:nth-of-type(even) {
             background-color: #e0e0e0;
