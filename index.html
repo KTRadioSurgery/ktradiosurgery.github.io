@@ -66,11 +66,11 @@
 			position: relative;
 			max-width: 1200px;
 			width: calc(5% + 50vw); /* Extend to the left beyond the viewport edge */
-			margin-left: -5%; /* Shift the left edge beyond the viewport */
+			margin-left: -50vw; /* Shift the left edge beyond the viewport */
 			border-top-left-radius: 0; /* Remove the top-left rounded corner */
 			border-bottom-left-radius: 0; /* Remove the bottom-left rounded corner */
 			background-color: #f4f4f4; /* Light gray background for odd sections */
-			padding-left: calc(2rem + 50vw - 35%); /* Adjust padding so content starts properly */
+			padding-left: calc(2rem + 50vw); /* Adjust padding so content starts properly */
 		}
         section:nth-of-type(even) {
 			position: relative;
@@ -81,7 +81,7 @@
 			border-top-right-radius: 0; /* Remove the top-left rounded corner */
 			border-bottom-right-radius: 0; /* Remove the bottom-left rounded corner */
 			background-color: #e0e0e0; /* Dark gray background for even sections */
-			padding-right: calc(2rem + 50vw - 35%); /* Adjust padding so content starts properly */
+			padding-right: calc(2rem + 50vw + 35%); /* Adjust padding so content starts properly */
             
         }
         h2 {
