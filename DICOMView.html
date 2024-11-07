@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRI Mosaic Scroll Viewer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .mri-container {
+            width: 600px;
+            height: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+        #mri-mosaic {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="mri-container">
+        <img id="mri-mosaic" src="mri-mosaic.png" alt="MRI Mosaic">
+    </div>
+    
+    <script>
+        // JavaScript to implement scrolling through the mosaic
+        document.addEventListener('DOMContentLoaded', () => {
+            const mosaicImage = document.getElementById('mri-mosaic');
+            const container = document.querySelector('.mri-container');
+
+            // Get the dimensions of the mosaic image and container
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+
+            let currentSliceX = 0;
+            let currentSliceY = 0;
+
+            // Adjust the scrolling increment for each scroll event
+            const SCROLL_INCREMENT = 100; // Adjust based on mosaic arrangement (e.g., width of each slice)
+
+            container.addEventListener('wheel', (event) => {
+                event.preventDefault();
+                // Determine the scroll direction
+                if (event.deltaY > 0) {
+                    currentSliceY -= SCROLL_INCREMENT;
+                } else {
+                    currentSliceY += SCROLL_INCREMENT;
+                }
+
+                // Prevent moving out of the bounds of the mosaic
+                const maxOffsetX = -(mosaicImage.width - containerWidth);
+                const maxOffsetY = -(mosaicImage.height - containerHeight);
+                currentSliceY = Math.min(0, Math.max(maxOffsetY, currentSliceY));
+                currentSliceX = Math.min(0, Math.max(maxOffsetX, currentSliceX));
+
+                // Update the position of the mosaic
+                mosaicImage.style.transform = `translate(${currentSliceX}px, ${currentSliceY}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
