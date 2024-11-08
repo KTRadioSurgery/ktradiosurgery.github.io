@@ -40,7 +40,7 @@
     </style>
 </head>
 <body>
-    <h1>Trace the Shapes</h1>
+    <h1>Trace the Shapes 2</h1>
     <label for="username">Enter your name: </label>
     <input type="text" id="username" placeholder="Your name here">
     <br>
@@ -104,9 +104,6 @@
             const offsetX = touch.clientX - rect.left;
             const offsetY = touch.clientY - rect.top;
 
-            traceData.push({ type: traceType, x: offsetX, y: offsetY, time: new Date().getTime() });
-
-            // Draw the path on the canvas
             if (event.type === 'touchstart') {
                 context.beginPath();
                 context.moveTo(offsetX, offsetY);
@@ -114,6 +111,8 @@
                 context.lineTo(offsetX, offsetY);
                 context.stroke();
             }
+
+            traceData.push({ type: traceType, x: offsetX, y: offsetY, time: new Date().getTime() });
         }
 
         traceXArea.addEventListener('touchstart', (e) => recordGesture(e, 'X', traceXContext));
