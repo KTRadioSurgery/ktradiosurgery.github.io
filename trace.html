@@ -3,32 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trace X and O</title>
+    <title>Trace Area</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        .button {
-            padding: 10px 20px;
-            font-size: 18px;
-            margin: 20px;
-            cursor: pointer;
-        }
-        img {
-            max-width: 80%;
-            height: auto;
-        }
         .trace-area {
-            border: 2px dashed #ccc;
-            width: 80%;
+            border: 2px solid #000;
+            width: 300px;
             height: 300px;
             margin: 20px auto;
             position: relative;
             touch-action: none;
-            background-color: #f9f9f9;
+            background-color: #f0f0f0;
         }
         canvas {
             position: absolute;
@@ -40,121 +24,76 @@
     </style>
 </head>
 <body>
-    <h1>Trace the Shapes 3</h1>
-    <label for="username">Enter your name: </label>
-    <input type="text" id="username" placeholder="Your name here">
-    <br>
-    <button id="startButton" class="button">Start</button>
-
-    <div id="traceXSection" style="display:none;">
-        <img id="xImage" src="x-image.png" alt="Trace the X">
-        <div id="traceX" class="trace-area">
-            <canvas id="traceXCanvas"></canvas>
-        </div>
-        <button id="toOButton" class="button">Go to O</button>
+    <h1>Trace in the Square</h1>
+    <div class="trace-area">
+        <canvas id="traceCanvas"></canvas>
     </div>
-
-    <div id="traceOSection" style="display:none;">
-        <img id="oImage" src="o-image.png" alt="Trace the O">
-        <div id="traceO" class="trace-area">
-            <canvas id="traceOCanvas"></canvas>
-        </div>
-        <button id="finishButton" class="button">Finish</button>
-    </div>
-
+    <button id="sendEmailButton">Send Trace Data</button>
     <script>
-        const startButton = document.getElementById('startButton');
-        const traceXSection = document.getElementById('traceXSection');
-        const traceXArea = document.getElementById('traceX');
-        const traceXCanvas = document.getElementById('traceXCanvas');
-        const toOButton = document.getElementById('toOButton');
-        const traceOSection = document.getElementById('traceOSection');
-        const traceOArea = document.getElementById('traceO');
-        const traceOCanvas = document.getElementById('traceOCanvas');
-        const finishButton = document.getElementById('finishButton');
-        const usernameInput = document.getElementById('username');
-
-        let traceData = [];
+        const traceCanvas = document.getElementById('traceCanvas');
+        const context = traceCanvas.getContext('2d');
         let isDrawing = false;
+        let traceData = [];
 
-        // Set up canvases for drawing
-        function setupCanvas(canvas) {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-            const context = canvas.getContext('2d');
+        // Set up canvas dimensions
+        function setupCanvas() {
+            traceCanvas.width = traceCanvas.parentElement.clientWidth;
+            traceCanvas.height = traceCanvas.parentElement.clientHeight;
             context.lineWidth = 3;
             context.strokeStyle = 'blue';
             context.lineCap = 'round';
-            return context;
         }
 
-        const traceXContext = setupCanvas(traceXCanvas);
-        const traceOContext = setupCanvas(traceOCanvas);
+        setupCanvas();
 
-        // Start button click event
-        startButton.addEventListener('click', () => {
-            traceXSection.style.display = 'block';
-            traceXSection.scrollIntoView({ behavior: 'smooth' });
-        });
+        function startDrawing(event) {
+            isDrawing = true;
+            const { offsetX, offsetY } = getEventPosition(event);
+            context.beginPath();
+            context.moveTo(offsetX, offsetY);
+            recordGesture(offsetX, offsetY);
+        }
 
-        // Add touch event listeners to trace areas with visual feedback
-        function recordGesture(event, traceType, context) {
-            event.preventDefault();
-            const rect = event.target.getBoundingClientRect();
-            let offsetX, offsetY;
+        function draw(event) {
+            if (!isDrawing) return;
+            const { offsetX, offsetY } = getEventPosition(event);
+            context.lineTo(offsetX, offsetY);
+            context.stroke();
+            recordGesture(offsetX, offsetY);
+        }
 
-            if (event.type.includes('touch')) {
+        function stopDrawing() {
+            isDrawing = false;
+            context.closePath();
+        }
+
+        function recordGesture(offsetX, offsetY) {
+            traceData.push({ x: offsetX, y: offsetY, time: new Date().getTime() });
+        }
+
+        function getEventPosition(event) {
+            if (event.touches && event.touches.length > 0) {
                 const touch = event.touches[0];
-                offsetX = touch.clientX - rect.left;
-                offsetY = touch.clientY - rect.top;
-            } else if (event.type.includes('mouse')) {
-                offsetX = event.clientX - rect.left;
-                offsetY = event.clientY - rect.top;
+                const rect = traceCanvas.getBoundingClientRect();
+                return { offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top };
+            } else {
+                return { offsetX: event.offsetX, offsetY: event.offsetY };
             }
-
-            if (event.type === 'touchstart' || event.type === 'mousedown') {
-                isDrawing = true;
-                context.beginPath();
-                context.moveTo(offsetX, offsetY);
-            } else if ((event.type === 'touchmove' || event.type === 'mousemove') && isDrawing) {
-                context.lineTo(offsetX, offsetY);
-                context.stroke();
-            } else if (event.type === 'mouseup' || event.type === 'touchend') {
-                isDrawing = false;
-            }
-
-            traceData.push({ type: traceType, x: offsetX, y: offsetY, time: new Date().getTime() });
         }
 
-        // Touch events
-        traceXArea.addEventListener('touchstart', (e) => recordGesture(e, 'X', traceXContext));
-        traceXArea.addEventListener('touchmove', (e) => recordGesture(e, 'X', traceXContext));
-        traceXArea.addEventListener('touchend', (e) => recordGesture(e, 'X', traceXContext));
+        traceCanvas.addEventListener('mousedown', startDrawing);
+        traceCanvas.addEventListener('mousemove', draw);
+        traceCanvas.addEventListener('mouseup', stopDrawing);
+        traceCanvas.addEventListener('mouseleave', stopDrawing);
 
-        traceOArea.addEventListener('touchstart', (e) => recordGesture(e, 'O', traceOContext));
-        traceOArea.addEventListener('touchmove', (e) => recordGesture(e, 'O', traceOContext));
-        traceOArea.addEventListener('touchend', (e) => recordGesture(e, 'O', traceOContext));
+        traceCanvas.addEventListener('touchstart', startDrawing);
+        traceCanvas.addEventListener('touchmove', draw);
+        traceCanvas.addEventListener('touchend', stopDrawing);
 
-        // Mouse events for debugging on desktop
-        traceXArea.addEventListener('mousedown', (e) => recordGesture(e, 'X', traceXContext));
-        traceXArea.addEventListener('mousemove', (e) => recordGesture(e, 'X', traceXContext));
-        traceXArea.addEventListener('mouseup', (e) => recordGesture(e, 'X', traceXContext));
-
-        traceOArea.addEventListener('mousedown', (e) => recordGesture(e, 'O', traceOContext));
-        traceOArea.addEventListener('mousemove', (e) => recordGesture(e, 'O', traceOContext));
-        traceOArea.addEventListener('mouseup', (e) => recordGesture(e, 'O', traceOContext));
-
-        // To O button click event
-        toOButton.addEventListener('click', () => {
-            traceOSection.style.display = 'block';
-            traceOSection.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Finish button click event
-        finishButton.addEventListener('click', () => {
-            const userName = usernameInput.value;
-            const emailBody = `Name: ${userName}%0A
-Trace Data:%0A${JSON.stringify(traceData)}`;
+        // Send trace data via email
+        const sendEmailButton = document.getElementById('sendEmailButton');
+        sendEmailButton.addEventListener('click', () => {
+            const emailBody = `Trace Data:%0A${JSON.stringify(traceData)}`;
             window.location.href = `mailto:?subject=Trace Data&body=${emailBody}`;
         });
     </script>
