@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trace X and O</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 20px;
+            cursor: pointer;
+        }
+        img {
+            max-width: 80%;
+            height: auto;
+        }
+        .trace-area {
+            border: 2px dashed #ccc;
+            width: 80%;
+            height: 300px;
+            margin: 20px auto;
+            position: relative;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trace the Shapes</h1>
+    <label for="username">Enter your name: </label>
+    <input type="text" id="username" placeholder="Your name here">
+    <br>
+    <button id="startButton" class="button">Start</button>
+
+    <div id="traceXSection" style="display:none;">
+        <img id="xImage" src="x-image.png" alt="Trace the X">
+        <div id="traceX" class="trace-area"></div>
+        <button id="toOButton" class="button">Go to O</button>
+    </div>
+
+    <div id="traceOSection" style="display:none;">
+        <img id="oImage" src="o-image.png" alt="Trace the O">
+        <div id="traceO" class="trace-area"></div>
+        <button id="finishButton" class="button">Finish</button>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const traceXSection = document.getElementById('traceXSection');
+        const traceXArea = document.getElementById('traceX');
+        const toOButton = document.getElementById('toOButton');
+        const traceOSection = document.getElementById('traceOSection');
+        const traceOArea = document.getElementById('traceO');
+        const finishButton = document.getElementById('finishButton');
+        const usernameInput = document.getElementById('username');
+
+        let traceData = [];
+
+        // Start button click event
+        startButton.addEventListener('click', () => {
+            traceXSection.style.display = 'block';
+            startButton.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Add touch event listeners to trace areas
+        function recordGesture(event, traceType) {
+            event.preventDefault();
+            const touch = event.touches[0];
+            const offsetX = touch.clientX;
+            const offsetY = touch.clientY;
+            traceData.push({ type: traceType, x: offsetX, y: offsetY, time: new Date().getTime() });
+        }
+
+        traceXArea.addEventListener('touchmove', (e) => recordGesture(e, 'X'));
+        traceOArea.addEventListener('touchmove', (e) => recordGesture(e, 'O'));
+
+        // To O button click event
+        toOButton.addEventListener('click', () => {
+            traceOSection.style.display = 'block';
+            toOButton.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Finish button click event
+        finishButton.addEventListener('click', () => {
+            const userName = usernameInput.value;
+            const emailBody = `Name: ${userName}%0A
+Trace Data:%0A${JSON.stringify(traceData)}`;
+            window.location.href = `mailto:?subject=Trace Data&body=${emailBody}`;
+        });
+    </script>
+</body>
+</html>
