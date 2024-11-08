@@ -28,6 +28,14 @@
             margin: 20px auto;
             position: relative;
             touch-action: none;
+            background-color: #f9f9f9;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -40,13 +48,17 @@
 
     <div id="traceXSection" style="display:none;">
         <img id="xImage" src="x-image.png" alt="Trace the X">
-        <div id="traceX" class="trace-area"></div>
+        <div id="traceX" class="trace-area">
+            <canvas id="traceXCanvas"></canvas>
+        </div>
         <button id="toOButton" class="button">Go to O</button>
     </div>
 
     <div id="traceOSection" style="display:none;">
         <img id="oImage" src="o-image.png" alt="Trace the O">
-        <div id="traceO" class="trace-area"></div>
+        <div id="traceO" class="trace-area">
+            <canvas id="traceOCanvas"></canvas>
+        </div>
         <button id="finishButton" class="button">Finish</button>
     </div>
 
@@ -54,13 +66,29 @@
         const startButton = document.getElementById('startButton');
         const traceXSection = document.getElementById('traceXSection');
         const traceXArea = document.getElementById('traceX');
+        const traceXCanvas = document.getElementById('traceXCanvas');
         const toOButton = document.getElementById('toOButton');
         const traceOSection = document.getElementById('traceOSection');
         const traceOArea = document.getElementById('traceO');
+        const traceOCanvas = document.getElementById('traceOCanvas');
         const finishButton = document.getElementById('finishButton');
         const usernameInput = document.getElementById('username');
 
         let traceData = [];
+
+        // Set up canvases for drawing
+        function setupCanvas(canvas) {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            const context = canvas.getContext('2d');
+            context.lineWidth = 3;
+            context.strokeStyle = 'blue';
+            context.lineCap = 'round';
+            return context;
+        }
+
+        const traceXContext = setupCanvas(traceXCanvas);
+        const traceOContext = setupCanvas(traceOCanvas);
 
         // Start button click event
         startButton.addEventListener('click', () => {
@@ -68,17 +96,31 @@
             startButton.scrollIntoView({ behavior: 'smooth' });
         });
 
-        // Add touch event listeners to trace areas
-        function recordGesture(event, traceType) {
+        // Add touch event listeners to trace areas with visual feedback
+        function recordGesture(event, traceType, context) {
             event.preventDefault();
             const touch = event.touches[0];
-            const offsetX = touch.clientX;
-            const offsetY = touch.clientY;
+            const rect = event.target.getBoundingClientRect();
+            const offsetX = touch.clientX - rect.left;
+            const offsetY = touch.clientY - rect.top;
+
             traceData.push({ type: traceType, x: offsetX, y: offsetY, time: new Date().getTime() });
+
+            // Draw the path on the canvas
+            if (event.type === 'touchstart') {
+                context.beginPath();
+                context.moveTo(offsetX, offsetY);
+            } else if (event.type === 'touchmove') {
+                context.lineTo(offsetX, offsetY);
+                context.stroke();
+            }
         }
 
-        traceXArea.addEventListener('touchmove', (e) => recordGesture(e, 'X'));
-        traceOArea.addEventListener('touchmove', (e) => recordGesture(e, 'O'));
+        traceXArea.addEventListener('touchstart', (e) => recordGesture(e, 'X', traceXContext));
+        traceXArea.addEventListener('touchmove', (e) => recordGesture(e, 'X', traceXContext));
+
+        traceOArea.addEventListener('touchstart', (e) => recordGesture(e, 'O', traceOContext));
+        traceOArea.addEventListener('touchmove', (e) => recordGesture(e, 'O', traceOContext));
 
         // To O button click event
         toOButton.addEventListener('click', () => {
