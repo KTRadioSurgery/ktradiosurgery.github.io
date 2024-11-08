@@ -23,12 +23,14 @@
         }
     </style>
 </head>
-<body>
-    <h1>Trace in the Square</h1>
+<body style="text-align: center;">
+    <h1 style="text-align: center;">Trace in the Square</h1>
+    <label for="username" style="display: block; margin-bottom: 10px;">Enter your name: </label>
+    <input type="text" id="username" placeholder="Your name here" style="margin-bottom: 20px;">
     <div class="trace-area">
         <canvas id="traceCanvas"></canvas>
     </div>
-    <button id="sendEmailButton">Send Trace Data</button>
+    <button id="sendEmailButton" style="display: block; margin: 20px auto;">Send Trace Data</button>
     <script>
         const traceCanvas = document.getElementById('traceCanvas');
         const context = traceCanvas.getContext('2d');
