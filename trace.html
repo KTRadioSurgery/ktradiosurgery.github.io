@@ -40,7 +40,7 @@
     </style>
 </head>
 <body>
-    <h1>Trace the Shapes 2</h1>
+    <h1>Trace the Shapes 3</h1>
     <label for="username">Enter your name: </label>
     <input type="text" id="username" placeholder="Your name here">
     <br>
@@ -75,6 +75,7 @@
         const usernameInput = document.getElementById('username');
 
         let traceData = [];
+        let isDrawing = false;
 
         // Set up canvases for drawing
         function setupCanvas(canvas) {
@@ -99,27 +100,49 @@
         // Add touch event listeners to trace areas with visual feedback
         function recordGesture(event, traceType, context) {
             event.preventDefault();
-            const touch = event.touches[0];
             const rect = event.target.getBoundingClientRect();
-            const offsetX = touch.clientX - rect.left;
-            const offsetY = touch.clientY - rect.top;
+            let offsetX, offsetY;
 
-            if (event.type === 'touchstart') {
+            if (event.type.includes('touch')) {
+                const touch = event.touches[0];
+                offsetX = touch.clientX - rect.left;
+                offsetY = touch.clientY - rect.top;
+            } else if (event.type.includes('mouse')) {
+                offsetX = event.clientX - rect.left;
+                offsetY = event.clientY - rect.top;
+            }
+
+            if (event.type === 'touchstart' || event.type === 'mousedown') {
+                isDrawing = true;
                 context.beginPath();
                 context.moveTo(offsetX, offsetY);
-            } else if (event.type === 'touchmove') {
+            } else if ((event.type === 'touchmove' || event.type === 'mousemove') && isDrawing) {
                 context.lineTo(offsetX, offsetY);
                 context.stroke();
+            } else if (event.type === 'mouseup' || event.type === 'touchend') {
+                isDrawing = false;
             }
 
             traceData.push({ type: traceType, x: offsetX, y: offsetY, time: new Date().getTime() });
         }
 
+        // Touch events
         traceXArea.addEventListener('touchstart', (e) => recordGesture(e, 'X', traceXContext));
         traceXArea.addEventListener('touchmove', (e) => recordGesture(e, 'X', traceXContext));
+        traceXArea.addEventListener('touchend', (e) => recordGesture(e, 'X', traceXContext));
 
         traceOArea.addEventListener('touchstart', (e) => recordGesture(e, 'O', traceOContext));
         traceOArea.addEventListener('touchmove', (e) => recordGesture(e, 'O', traceOContext));
+        traceOArea.addEventListener('touchend', (e) => recordGesture(e, 'O', traceOContext));
+
+        // Mouse events for debugging on desktop
+        traceXArea.addEventListener('mousedown', (e) => recordGesture(e, 'X', traceXContext));
+        traceXArea.addEventListener('mousemove', (e) => recordGesture(e, 'X', traceXContext));
+        traceXArea.addEventListener('mouseup', (e) => recordGesture(e, 'X', traceXContext));
+
+        traceOArea.addEventListener('mousedown', (e) => recordGesture(e, 'O', traceOContext));
+        traceOArea.addEventListener('mousemove', (e) => recordGesture(e, 'O', traceOContext));
+        traceOArea.addEventListener('mouseup', (e) => recordGesture(e, 'O', traceOContext));
 
         // To O button click event
         toOButton.addEventListener('click', () => {
