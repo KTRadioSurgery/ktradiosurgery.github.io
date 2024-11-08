@@ -76,12 +76,13 @@
         section:nth-of-type(even) {
 			position: relative;
 			max-width: 1200px;
-			width: calc(50vw + 14rem); /* Extend to the right beyond the viewport edge; then shift so the title is centered */
+			width: calc(100% - 4rem - 2rem); /* Extend to the right beyond the viewport edge; then shift so the title is centered, first for margin in this section, thenfor padding in sections in general */
 			border-top-right-radius: 0; /* Remove the top-left rounded corner */
 			border-bottom-right-radius: 0; /* Remove the bottom-left rounded corner */
 			background-color: #e0e0e0; /* Dark gray background for even sections */
-			padding-right: 50vw; /* Make sure gray extends all the way right */
-			padding-left: calc(4rem); /* Adjust padding so content starts properly */
+			padding-left: 4rem; /* Moves the text over, but also extends the box over; also contains exess width in width, above (2rem) */
+			margin-left: 0rem; /* Moves the left edge of the box, with the text */
+			padding-right: calc(2rem + 18.5vw); /* Makes the box exactly full width, to account for removed width in width above, needed to keep title centered. Then padding added to end of screen. */
         }
         h2 {
             text-align: center;
@@ -180,7 +181,7 @@
 			<!-- <img id="dti-diamond" src="DTI Diamond.png" alt="DTI Diamond Overlapping Documents and Research Projects"> -->
             <ul>
                 <li>Novel Tensor Calculus Processing of Diffusion Tensor Imaging</li>
-                <li>Brain Magnetic Resonance Elastography</li>
+                <li><a href="research/DICOMView.html">Brain Magnetic Resonance Elastography</a></li>
                 <li>GammaTile Experience and Innovations</li>
                 <li>Deep Learning Models with Radiology and Bioinformatic Data</li>
                 <li>Natural Language Models for Patient Education</li>
