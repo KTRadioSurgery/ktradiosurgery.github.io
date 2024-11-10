@@ -76,13 +76,12 @@
         section:nth-of-type(even) {
 			position: relative;
 			max-width: 1200px;
-			width: calc(100% - 4rem - 2rem); /* Extend to the right beyond the viewport edge; then shift so the title is centered, first for margin in this section, thenfor padding in sections in general */
+			width: calc(100% - 4rem - 2rem); /* Don't change: Extends to the right beyond the viewport edge; then shift so the title is centered, first for margin in this section, then for padding in sections in general */
 			border-top-right-radius: 0; /* Remove the top-left rounded corner */
 			border-bottom-right-radius: 0; /* Remove the bottom-left rounded corner */
 			background-color: #e0e0e0; /* Dark gray background for even sections */
 			padding-left: 4rem; /* Moves the text over, but also extends the box over; also contains exess width in width, above (2rem) */
-			margin-left: 0rem; /* Moves the left edge of the box, with the text */
-			padding-right: calc(2rem + 18.5vw); /* Makes the box exactly full width, to account for removed width in width above, needed to keep title centered. Then padding added to end of screen. */
+			padding-right: calc(2rem + 100vw); /* Moves the right edge of the box to be full width of banner */
         }
         h2 {
             text-align: center;
