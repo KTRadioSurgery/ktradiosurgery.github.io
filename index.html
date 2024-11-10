@@ -119,13 +119,24 @@
 			width: 100%;
 			height: 100%;
 		}
-		#dti-diamond {
-            position: realative;
-			top: -100px;
-            margin-right: 30%; /* Adjust to place it over both sections */
-            width: 200px; /* Set desired width */
-            z-index: 2; /* Make sure it's on top of the boxes */
-        }
+		.overlap-container {
+			position: relative; /* Make this container a reference for absolutely positioned elements */
+		}
+		#overlap-graphic {
+			position: absolute;
+			right: -50px; /* Push the image to the right to overlap sections */
+			top: -50px; /* Position so it overlaps the current section and part of the above section */
+			width: 150px; /* Set appropriate width for the graphic */
+			height: auto;
+			z-index: 5; /* Ensure it stays on top of the sections */
+		}
+		@media (max-width: 768px) {
+			#overlap-graphic {
+				right: -25px; /* Adjust for smaller screens */
+				top: -25px; /* Adjust for smaller screens */
+				width: 100px; /* Make it smaller on mobile for better layout */
+			}
+		}
 		/* Media Query for Smaller Screens */
 			@media (max-width: 768px) {
 			section:nth-of-type(odd), 
@@ -133,7 +144,7 @@
             margin-left: 1rem;  /* Reset margins */
 			width: 90%;  /* Set width to 100% of viewport */
             padding-left: 1rem;  /* Standard padding */
-            padding-right: 1rem;  /* Standard padding */
+            padding-right: 1rem;  /* Standard padding; gives a bit of whitespace to the right of the section */
 			border-top-left-radius: 8px; /* Remove the top-left rounded corner */
 			border-bottom-left-radius: 8px; /* Remove the bottom-left rounded corner */
 			border-top-right-radius: 8px; /* Remove the top-left rounded corner */
@@ -196,6 +207,7 @@
                 <li>Radiosurgery Innovations (streamlining workflow, improving imaging, and refining dose constraints)</li>
                 <li>Brachytherapy Innovations (applicator improvements and QA technologies)</li>
             </ul>
+			<img id="overlap-graphic" src="DTI Diamond.png" alt="DTI Diamond">
         </section>
 
         <section id="members">
