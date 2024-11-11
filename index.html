@@ -123,7 +123,16 @@
 		.overlap-container {
 			position: relative; /* Make this container a reference for absolutely positioned elements */
 		}
-		#overlap-graphic {
+		#dti-graphic {
+			position: absolute;
+			right: -80px; /* Push the image to the right to overlap sections */
+			top: -50px; /* Position so it overlaps the current section and part of the above section */
+			width: 250px; /* Set appropriate width for the graphic */
+			height: auto;
+			z-index: 5; /* Ensure it stays on top of the sections */
+			filter: drop-shadow(5px 10px 15px rgba(0, 0, 0, 1.0));
+		}
+		#documents-graphic {
 			position: absolute;
 			right: -80px; /* Push the image to the right to overlap sections */
 			top: -50px; /* Position so it overlaps the current section and part of the above section */
@@ -133,7 +142,7 @@
 			filter: drop-shadow(5px 10px 15px rgba(0, 0, 0, 1.0));
 		}
 		@media (max-width: 768px) {
-			#overlap-graphic {
+			#dti-graphic, #documents-graphic {
 				right: 15px; /* Adjust for smaller screens */
 				top: -25px; /* Adjust for smaller screens */
 				width: 100px; /* Make it smaller on mobile for better layout */
@@ -195,7 +204,7 @@
                 <li><a href="publications/">Publications</a> - Browse through published research papers.</li>
                 <li><a href="whitepapers/">Whitepapers, Notes, & Manuals</a> - Notes and manuals on various research topics.</li>
             </ul>
-			<img id="overlap-graphic" src="docuements.png" alt="Documents">
+			<img id="documents-graphic" src="documents.png" alt="Documents">
         </section>
 		
         <section id="research">
@@ -211,7 +220,7 @@
                 <li>Radiosurgery Innovations (streamlining workflow, improving imaging, and refining dose constraints)</li>
                 <li>Brachytherapy Innovations (applicator improvements and QA technologies)</li>
             </ul>
-			<img id="overlap-graphic" src="DTI Diamond.png" alt="DTI Diamond">
+			<img id="dti-graphic" src="DTI Diamond.png" alt="DTI Diamond"> 
         </section>
 
         <section id="members">
