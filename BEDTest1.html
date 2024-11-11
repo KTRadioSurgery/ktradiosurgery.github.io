@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BED Calculator - Tatebe Lab</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #004E25;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #003B1A;
+            padding: 0.5rem 0;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 1rem;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        section {
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.3);
+        }
+        h2 {
+            text-align: center;
+            color: #004E25;
+        }
+        .input-group {
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+        }
+        .input-group label {
+            flex: 1;
+            font-weight: bold;
+        }
+        .input-group input[type="number"] {
+            flex: 1;
+            padding: 0.5rem;
+            margin-right: 1rem;
+        }
+        .input-group input[type="range"] {
+            flex: 2;
+        }
+        .input-group input[type="checkbox"] {
+            margin-left: 1rem;
+        }
+        #chartContainer {
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BED Calculator</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="clinical_trials.html">Clinical Trials</a></li>
+            <li><a href="bed_calculator.html">BED Calculator</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="bed-calculator">
+            <h2>Calculate Biological Effective Dose (BED) and EQD2</h2>
+            <div class="input-group">
+                <label for="totalDose">Total Radiation Dose (Gy):</label>
+                <input type="number" id="totalDose" value="60">
+                <input type="range" id="totalDoseSlider" min="0" max="100" value="60">
+                <input type="checkbox" id="totalDoseFixed"> Hold Fixed
+            </div>
+            <div class="input-group">
+                <label for="fractions">Number of Fractions:</label>
+                <input type="number" id="fractions" value="30">
+                <input type="range" id="fractionsSlider" min="1" max="60" value="30">
+                <input type="checkbox" id="fractionsFixed"> Hold Fixed
+            </div>
+            <div class="input-group">
+                <label for="dosePerFraction">Dose per Fraction (Gy):</label>
+                <input type="number" id="dosePerFraction" value="2">
+                <input type="range" id="dosePerFractionSlider" min="0.1" max="10" step="0.1" value="2">
+                <input type="checkbox" id="dosePerFractionFixed"> Hold Fixed
+            </div>
+            <div id="chartContainer">
+                <canvas id="bedChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalDoseInput = document.getElementById('totalDose');
+            const totalDoseSlider = document.getElementById('totalDoseSlider');
+            const fractionsInput = document.getElementById('fractions');
+            const fractionsSlider = document.getElementById('fractionsSlider');
+            const dosePerFractionInput = document.getElementById('dosePerFraction');
+            const dosePerFractionSlider = document.getElementById('dosePerFractionSlider');
+
+            const updateSliderFromInput = (input, slider) => slider.value = input.value;
+            const updateInputFromSlider = (slider, input) => input.value = slider.value;
+
+            totalDoseInput.addEventListener('input', () => updateSliderFromInput(totalDoseInput, totalDoseSlider));
+            totalDoseSlider.addEventListener('input', () => updateInputFromSlider(totalDoseSlider, totalDoseInput));
+
+            fractionsInput.addEventListener('input', () => updateSliderFromInput(fractionsInput, fractionsSlider));
+            fractionsSlider.addEventListener('input', () => updateInputFromSlider(fractionsSlider, fractionsInput));
+
+            dosePerFractionInput.addEventListener('input', () => updateSliderFromInput(dosePerFractionInput, dosePerFractionSlider));
+            dosePerFractionSlider.addEventListener('input', () => updateInputFromSlider(dosePerFractionSlider, dosePerFractionInput));
+
+            const ctx = document.getElementById('bedChart').getContext('2d');
+            const bedChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: 50 }, (_, i) => i + 1),
+                    datasets: [
+                        {
+                            label: 'Alpha/Beta = 2',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            fill: false,
+                            data: Array.from({ length: 50 }, () => Math.random() * 100)
+                        },
+                        {
+                            label: 'Alpha/Beta = 3',
+                            borderColor: 'rgba(192, 75, 192, 1)',
+                            fill: false,
+                            data: Array.from({ length: 50 }, () => Math.random() * 100)
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Number of Fractions'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'BED (Gy)'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
