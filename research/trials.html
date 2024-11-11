@@ -188,7 +188,7 @@
 		
 		<section id="abbrv">
 			<h2>Abbreviations</h2>
-            <ul>
+            <ul class="glossary-list">
                 <li>GBM - Glioblastoma</li>
                 <li>SRS - Stereotactic Radiosurgery</li>
 				<li>fSRS - Fractionated Stereotactic Radiosurgery</li>
@@ -202,6 +202,26 @@
 			</ul>
 		</section>
     </div>
+
+<script>
+	/* Keep glossary in alphabetical order */
+    document.addEventListener("DOMContentLoaded", function() {
+        const glossaryList = document.querySelector('.glossary-list');
+        const items = Array.from(glossaryList.querySelectorAll('li'));
+
+        items.sort((a, b) => {
+            const textA = a.textContent.trim().toUpperCase();
+            const textB = b.textContent.trim().toUpperCase();
+            return textA.localeCompare(textB);
+        });
+
+        // Clear the existing list
+        glossaryList.innerHTML = '';
+
+        // Append the sorted items
+        items.forEach(item => glossaryList.appendChild(item));
+    });
+</script>
 
 
     <footer>
