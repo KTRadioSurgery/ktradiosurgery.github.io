@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trace Area</title>
+    <style>
+        .trace-area {
+            border: 2px solid #000;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            position: relative;
+            touch-action: none;
+            background-color: #f0f0f0;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body style="text-align: center;">
+    <h1 style="text-align: center;">Trace in the Square</h1>
+    <label for="username" style="display: block; margin-bottom: 10px;">Enter your name: </label>
+    <input type="text" id="username" placeholder="Your name here" style="margin-bottom: 20px;">
+    <div class="trace-area">
+        <canvas id="traceCanvas"></canvas>
+    </div>
+    <h2 style="text-align: center;">Trace the O</h2>
+    <div class="trace-area">
+        <canvas id="traceCanvasO"></canvas>
+    </div>
+    <button id="sendEmailButton" style="display: block; margin: 20px auto;">Send Trace Data</button>
+    <script>
+        const traceCanvas = document.getElementById('traceCanvas');
+        const context = traceCanvas.getContext('2d');
+        const traceCanvasO = document.getElementById('traceCanvasO');
+        const contextO = traceCanvasO.getContext('2d');
+        let isDrawingX = false;
+        let isDrawingO = false;
+
+        // Set up canvas dimensions
+        function setupCanvas(canvas, context) {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            context.lineWidth = 3;
+            context.strokeStyle = 'blue';
+            context.lineCap = 'round';
+        }
+
+        setupCanvas(traceCanvas, context);
+        setupCanvas(traceCanvasO, contextO);
+
+        function startDrawing(event, context, traceDataArray, isDrawingFlag) {
+            isDrawingFlag.value = true;
+            const { offsetX, offsetY } = getEventPosition(event, context.canvas);
+            context.beginPath();
+            context.moveTo(offsetX, offsetY);
+            recordGesture(offsetX, offsetY, traceDataArray);
+        } = getEventPosition(event, context.canvas);
+            context.beginPath();
+            context.moveTo(offsetX, offsetY);
+            recordGesture(offsetX, offsetY, traceDataArray);
+        }
+
+        function draw(event, context, traceDataArray, isDrawingFlag) {
+            if (!isDrawingFlag.value) return;
+            const { offsetX, offsetY } = getEventPosition(event, context.canvas);
+            context.lineTo(offsetX, offsetY);
+            context.stroke();
+            recordGesture(offsetX, offsetY, traceDataArray);
+        } = getEventPosition(event, context.canvas);
+            context.lineTo(offsetX, offsetY);
+            context.stroke();
+            recordGesture(offsetX, offsetY, traceDataArray);
+        }
+
+        function stopDrawing(context, isDrawingFlag) {
+            isDrawingFlag.value = false;
+            context.closePath();
+        }
+
+        function recordGesture(offsetX, offsetY, traceDataArray) {
+            traceDataArray.push({ x: offsetX, y: offsetY, time: new Date().getTime() });
+        }
+
+        function getEventPosition(event, canvas) {
+            if (event.touches && event.touches.length > 0) {
+                const touch = event.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                return { offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top };
+            } else {
+                return { offsetX: event.offsetX, offsetY: event.offsetY };
+            }
+        }
+
+        // Events for X canvas
+        traceCanvas.addEventListener('mousedown', (e) => startDrawing(e, context, traceData, { value: isDrawingX }));
+        traceCanvas.addEventListener('mousemove', (e) => draw(e, context, traceData, { value: isDrawingX }));
+        traceCanvas.addEventListener('mouseup', () => stopDrawing(context, { value: isDrawingX }));
+        traceCanvas.addEventListener('mouseleave', () => stopDrawing(context, { value: isDrawingX }));
+
+        traceCanvas.addEventListener('touchstart', (e) => startDrawing(e, context, traceData, { value: isDrawingX }));
+        traceCanvas.addEventListener('touchmove', (e) => draw(e, context, traceData, { value: isDrawingX }));
+        traceCanvas.addEventListener('touchend', () => stopDrawing(context, { value: isDrawingX }));
+
+        // Events for O canvas
+        traceCanvasO.addEventListener('mousedown', (e) => startDrawing(e, contextO, traceDataO, { value: isDrawingO }));
+        traceCanvasO.addEventListener('mousemove', (e) => draw(e, contextO, traceDataO, { value: isDrawingO }));
+        traceCanvasO.addEventListener('mouseup', () => stopDrawing(contextO, { value: isDrawingO }));
+        traceCanvasO.addEventListener('mouseleave', () => stopDrawing(contextO, { value: isDrawingO }));
+
+        traceCanvasO.addEventListener('touchstart', (e) => startDrawing(e, contextO, traceDataO, { value: isDrawingO }));
+        traceCanvasO.addEventListener('touchmove', (e) => draw(e, contextO, traceDataO, { value: isDrawingO }));
+        traceCanvasO.addEventListener('touchend', () => stopDrawing(contextO, { value: isDrawingO }));
+
+        // Send trace data via email
+        const sendEmailButton = document.getElementById('sendEmailButton');
+        sendEmailButton.addEventListener('click', () => {
+            const emailBody = `Name: ${document.getElementById('username').value}%0A
+Trace Data for X:%0A${JSON.stringify(traceData)}%0A
+Trace Data for O:%0A${JSON.stringify(traceDataO)}`;
+            window.location.href = `mailto:?subject=Trace Data&body=${emailBody}`;
+        });
+    </script>
+</body>
+</html>
