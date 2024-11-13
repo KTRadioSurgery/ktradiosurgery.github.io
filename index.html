@@ -147,18 +147,18 @@
 				width: 125px; /* Make it smaller on mobile for better layout */
 			}
 			#documents-graphic {
-				right: calc(100vw - 110px); /* Adjust for smaller ; left 37% also works ok */
+				right: calc(100vw - 120px); /* Adjust for smaller ; left 37% also works ok */
 				top: 95%; /* Adjust for smaller screens */
 				width: 75px; /* Make it smaller on mobile for better layout */
 			}
 		}
 		/* Media Query for Smaller Screens */
-			@media (max-width: 768) {
+			@media (max-width: 1200px) {
 			section:nth-of-type(odd), 
 			section:nth-of-type(even) {
             margin-left: 1rem;  /* Reset margins */
 			margin-right: 0rem; 
-			width: 90%;  /* Set width to 90% of viewport */
+			width: calc(100% - 3rem);  /* Set width to 90% of viewport */
             padding-left: 1rem;  /* Standard padding */
             padding-right: 0rem; /* Gives a touch of whitespace to the right of the sections. Wanted a bit more, but messes up formatting. */
 			border-top-left-radius: 8px; /* Remove the top-left rounded corner */
