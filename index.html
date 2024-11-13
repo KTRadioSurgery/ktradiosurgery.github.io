@@ -102,6 +102,24 @@
         ul li a:hover {
             text-decoration: underline;
         }
+		.photo-tooltip {
+			position: absolute;
+			display: none;
+		    /* top: 0; Aligns with the top of the #members section */
+			/* right: 10px; Positions it on the right side of the section */
+			border: 0px solid #ddd;
+			box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.3);
+			padding: 0px;
+			background-color: transparent;
+			z-index: 10;
+		}
+		.photo-tooltip img {
+			max-width: 200px; /* Ensure the image is properly sized */
+			height: auto; /* Maintain aspect ratio */
+			display: block; /* Ensure there is no extra space below the image */
+			margin: 0; /* Remove any margin */
+			border-radius: 8px; /* Add rounded corners */
+		}
         footer {
             background-color: #003B1A;
             color: #fff;
@@ -151,6 +169,9 @@
 				top: 95%; /* Adjust for smaller screens */
 				width: 75px; /* Make it smaller on mobile for better layout */
 			}
+			.photo-tooltip {
+				display: none !important; /* Force hiding the tooltip */
+			}
 		}
 		/* Media Query for Smaller Screens */
 			@media (max-width: 1200px) {
@@ -199,6 +220,8 @@
             <ul>
                 <li>Thank you for visiting our page! Here you'll find information about the group's research projects and various tools and writeups that may be of interest to those interested in neuro radiation oncology, physics, or data science.</li>
 				<li>This page is a work in progress, much like research itself. Feel free to reach out if you find anything interesting or have questions.</li>
+				<br>
+				<li>Ken_Tatebe "at" Rush "dot" edu</li>
             </ul>
         </section>
 
@@ -207,12 +230,12 @@
             <ul>
                 <li><a href="labgroup/">Meet Our Members</a></li>
 				<br>
-                <li><a href="https://www.rushu.rush.edu/faculty/ken-tatebe-md-phd">Ken Tatebe, MD, PhD</a> - Assistant Professor of Radiation Oncology</li>
-                <li><a href="https://www.rushu.rush.edu/faculty/thomas-kim-md">Thomas Kim, MD</a> - Assistant Professor of Radiation Oncology</li>
-                <li><a href="https://www.rushu.rush.edu/faculty/zachary-grelewicz-phd">Zachary Grelewicz, PhD</a> - Assistant Professor of Radiation Oncology</li>
-                <li><a href="https://www.rushu.rush.edu/faculty/jonathon-van-schelt-phd">Jonathon Van Schelt, PhD</a> - Assistant Professor of Radiation Oncology</li>
-                <li><a href="https://www.rushu.rush.edu/faculty/stephan-munich-md">Stephan Munich, MD</a> - Associate Professor of Neurosurgery</li>
-				<li><a href="https://www.rushu.rush.edu/education-training/graduate-medical-education/residency-programs/radiation-oncology-residency/meet-our-residents">Soum Roy, MBBS, MSc</a> - Radiation Oncology Resident</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/ken-tatebe-md-phd" data-photo="KT.jpg">Ken Tatebe, MD, PhD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/thomas-kim-md" data-photo="TK.jpg">Thomas Kim, MD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/zachary-grelewicz-phd" data-photo="ZG.jpg">Zachary Grelewicz, PhD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/jonathon-van-schelt-phd" data-photo="JVS.jpg">Jonathon Van Schelt, PhD</a> - Assistant Professor of Radiation Oncology</li>
+                <li><a href="https://www.rushu.rush.edu/faculty/stephan-munich-md" data-photo="SM.jpg">Stephan Munich, MD</a> - Associate Professor of Neurosurgery</li>
+				<li><a href="https://www.rushu.rush.edu/education-training/graduate-medical-education/residency-programs/radiation-oncology-residency/meet-our-residents" data-photo="SR.jpg">Soum Roy, MBBS, MSc</a> - Radiation Oncology Resident</li>
             </ul>
         </section>
 
@@ -269,5 +292,29 @@
     <footer>
         <p>© Tatebe Lab - Radiation Oncology, Physics, Imaging, and Data Science</p>
     </footer>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const memberLinks = document.querySelectorAll('#members a[data-photo]');
+		const tooltip = document.createElement('div');
+		tooltip.className = 'photo-tooltip';
+		document.querySelector('#members').appendChild(tooltip);
+
+		memberLinks.forEach(link => {
+			link.addEventListener('mouseover', function () {
+				const photoSrc = link.getAttribute('data-photo');
+				tooltip.innerHTML = `<img src="${photoSrc}" alt="Member Photo">`;
+				tooltip.style.display = 'block';
+				tooltip.style.left = `${650}px`; // Adjust positioning of photo
+				tooltip.style.top = `${150}px`; 
+			});
+
+			link.addEventListener('mouseout', function () {
+				tooltip.style.display = 'none';
+			});
+		});
+	});
+</script>
+
 </body>
 </html>
