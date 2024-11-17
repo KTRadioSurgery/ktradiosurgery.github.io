@@ -227,7 +227,7 @@
         </section>
 
 	   <div id="members" style="height: 0; margin: auto; width: 100%;"></div>
-       <section>
+       <section id="members_photos">
             <h2>Group Members</h2>
             <ul>
             	<li><a href="labgroup/">Meet Our Members</a></li>
@@ -304,7 +304,7 @@
 		const memberLinks = document.querySelectorAll('#members a[data-photo]');
 		const tooltip = document.createElement('div');
 		tooltip.className = 'photo-tooltip';
-		document.querySelector('#members').appendChild(tooltip);
+		document.querySelector('#members_photos').appendChild(tooltip);
 
 		memberLinks.forEach(link => {
 			link.addEventListener('mouseover', function () {
