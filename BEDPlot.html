@@ -69,4 +69,16 @@
             title: 'Parametric Contour Plot with Viridis Palette',
             xaxis: { title: 'X Axis' },
             yaxis: { title: 'Y Axis' },
-            dragmode: 'pan', // Enable p
+            dragmode: 'pan', // Enable panning
+        };
+
+        const config = {
+            scrollZoom: true, // Enable zoom with mouse scroll
+            responsive: true, // Adjust to viewport
+        };
+
+        // Render the plot
+        Plotly.newPlot('plot', contours, layout, config);
+    </script>
+</body>
+</html>
