@@ -52,9 +52,20 @@
         };
 
         const config = {
-            scrollZoom: true, // Enable zoom with mouse scroll or pinch
+            scrollZoom: true, // Enable zoom with mouse scroll
+            doubleClick: false, // Disable reset on double-click
             responsive: true, // Adjust to viewport
+            displayModeBar: true, // Show the mode bar for mobile users
+            modeBarButtonsToAdd: ['toggleSpikelines'], // Add extra functionality
         };
+
+        // Add touch support for mobile
+        const plotDiv = document.getElementById('plot');
+        plotDiv.addEventListener('touchmove', (event) => {
+            if (event.scale !== undefined) {
+                event.preventDefault(); // Prevent default scrolling
+            }
+        });
 
         // Render the plot
         Plotly.newPlot('plot', contours, layout, config);
