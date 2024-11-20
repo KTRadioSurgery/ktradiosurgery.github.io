@@ -3,72 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Contour Plot</title>
+    <title>Interactive Parametric Contour Plot</title>
     <script src="https://cdn.plot.ly/plotly-2.25.2.min.js"></script>
 </head>
 <body>
     <div id="plot" style="width: 100%; height: 100vh;"></div>
     <script>
-        // Define x and y ranges, and t values to loop over
-        const xRange = [-10, 10];
-        const yRange = [-10, 10];
-        const tValues = [3, 5, 7, 11]; // Specific t values to cycle over
-        const resolution = 50; // Resolution of the grid
+        // Define parametric range and list of 'c' values
+        const tRange = [0, 1]; // Parameter t ranges from 0 to 1
+        const cValues = [3, 5, 7, 11]; // Specific c values for contours
+        const tSteps = 100; // Number of steps for parametric equations
 
-        // Function to generate data for a specific t
-        const generateData = (t) => {
-            const x = Array.from({ length: resolution }, (_, i) => xRange[0] + i * (xRange[1] - xRange[0]) / (resolution - 1));
-            const y = Array.from({ length: resolution }, (_, i) => yRange[0] + i * (yRange[1] - yRange[0]) / (resolution - 1));
-            const z = x.map(xVal => y.map(yVal => {
-                // Replace with your actual function; currently using a placeholder
-                return Math.sin(Math.sqrt(xVal ** 2 + yVal ** 2) - t);
-            }));
-            return { x, y, z };
+        // Viridis color palette (manually spaced for Plotly compatibility)
+        const viridisColors = [
+            '#440154', '#482878', '#3E4989', '#31688E',
+            '#26828E', '#1F9D89', '#6CCE5A', '#B6DE2B'
+        ];
+        const contourColors = viridisColors.slice(0, cValues.length);
+
+        // Generate parametric x, y coordinates
+        const generateParametricData = (t) => {
+            // Replace the parametric equations with your actual equations
+            const x = Math.cos(2 * Math.PI * t) * (1 + t);
+            const y = Math.sin(2 * Math.PI * t) * (1 + t);
+            return { x, y };
         };
 
-        // Create traces for each t value in tValues
-        const contours = tValues.map(t => {
-            const { x, y, z } = generateData(t);
+        // Generate grid for z values (optional: replace placeholder function)
+        const generateZData = (c) => {
+            const z = Array.from({ length: tSteps }, (_, i) =>
+                Array.from({ length: tSteps }, (_, j) => {
+                    const t1 = i / (tSteps - 1);
+                    const t2 = j / (tSteps - 1);
+                    const { x: x1, y: y1 } = generateParametricData(t1);
+                    const { x: x2, y: y2 } = generateParametricData(t2);
+                    return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) - c; // Replace with your formula
+                })
+            );
+            return z;
+        };
+
+        // Create traces for each value of c
+        const contours = cValues.map((c, index) => {
+            const tArray = Array.from({ length: tSteps }, (_, i) => i / (tSteps - 1));
+            const x = tArray.map(t => generateParametricData(t).x);
+            const y = tArray.map(t => generateParametricData(t).y);
+            const z = generateZData(c);
             return {
                 x: x,
                 y: y,
                 z: z,
                 type: 'contour',
                 contours: {
-                    coloring: 'lines', // Draw contour lines
+                    coloring: 'heatmap', // Smooth coloring
                     showlabels: true, // Show labels for contour levels
                     labelfont: { size: 12, color: 'white' }
                 },
-                name: `t = ${t}` // Label for the legend
+                name: `c = ${c}`, // Label for the legend
+                line: { color: contourColors[index] } // Use Viridis color
             };
         });
 
         // Plotly layout and config for interactivity
         const layout = {
-            title: 'Interactive Contour Plot',
-            xaxis: { range: xRange, title: 'X Axis' },
-            yaxis: { range: yRange, title: 'Y Axis' },
-            dragmode: 'pan', // Enable panning
-        };
-
-        const config = {
-            scrollZoom: true, // Enable zoom with mouse scroll
-            doubleClick: false, // Disable reset on double-click
-            responsive: true, // Adjust to viewport
-            displayModeBar: true, // Show the mode bar for mobile users
-            modeBarButtonsToAdd: ['toggleSpikelines'], // Add extra functionality
-        };
-
-        // Add touch support for mobile
-        const plotDiv = document.getElementById('plot');
-        plotDiv.addEventListener('touchmove', (event) => {
-            if (event.scale !== undefined) {
-                event.preventDefault(); // Prevent default scrolling
-            }
-        });
-
-        // Render the plot
-        Plotly.newPlot('plot', contours, layout, config);
-    </script>
-</body>
-</html>
+            title: 'Parametric Contour Plot with Viridis Palette',
+            xaxis: { title: 'X Axis' },
+            yaxis: { title: 'Y Axis' },
+            dragmode: 'pan', // Enable p
