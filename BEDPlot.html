@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Parametric Contour Plot</title>
+    <title>Parametric Contour Plot</title>
     <script src="https://cdn.plot.ly/plotly-2.25.2.min.js"></script>
 </head>
 <body>
@@ -14,71 +14,51 @@
         const cValues = [3, 5, 7, 11]; // Specific c values for contours
         const tSteps = 100; // Number of steps for parametric equations
 
-        // Viridis color palette (manually spaced for Plotly compatibility)
+        // Viridis color palette (subset matching the number of contours)
         const viridisColors = [
             '#440154', '#482878', '#3E4989', '#31688E',
             '#26828E', '#1F9D89', '#6CCE5A', '#B6DE2B'
         ];
         const contourColors = viridisColors.slice(0, cValues.length);
 
-        // Generate parametric x, y coordinates
-        const generateParametricData = (t) => {
-            // Replace the parametric equations with your actual equations
-            const x = Math.cos(2 * Math.PI * t) * (1 + t);
-            const y = Math.sin(2 * Math.PI * t) * (1 + t);
+        // Generate parametric x, y coordinates for a specific c
+        const generateParametricData = (c) => {
+            const tArray = Array.from({ length: tSteps }, (_, i) => i / (tSteps - 1));
+            const x = tArray.map(t => Math.cos(2 * Math.PI * t) * (1 + c * 0.1)); // Example formula
+            const y = tArray.map(t => Math.sin(2 * Math.PI * t) * (1 + c * 0.1)); // Example formula
             return { x, y };
         };
 
-        // Generate grid for z values (optional: replace placeholder function)
-        const generateZData = (c) => {
-            const z = Array.from({ length: tSteps }, (_, i) =>
-                Array.from({ length: tSteps }, (_, j) => {
-                    const t1 = i / (tSteps - 1);
-                    const t2 = j / (tSteps - 1);
-                    const { x: x1, y: y1 } = generateParametricData(t1);
-                    const { x: x2, y: y2 } = generateParametricData(t2);
-                    return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2) - c; // Replace with your formula
-                })
-            );
-            return z;
-        };
-
         // Create traces for each value of c
-        const contours = cValues.map((c, index) => {
-            const tArray = Array.from({ length: tSteps }, (_, i) => i / (tSteps - 1));
-            const x = tArray.map(t => generateParametricData(t).x);
-            const y = tArray.map(t => generateParametricData(t).y);
-            const z = generateZData(c);
+        const traces = cValues.map((c, index) => {
+            const { x, y } = generateParametricData(c);
             return {
                 x: x,
                 y: y,
-                z: z,
-                type: 'contour',
-                contours: {
-                    coloring: 'heatmap', // Smooth coloring
-                    showlabels: true, // Show labels for contour levels
-                    labelfont: { size: 12, color: 'white' }
+                mode: 'lines',
+                line: {
+                    color: contourColors[index],
+                    width: 2
                 },
-                name: `c = ${c}`, // Label for the legend
-                line: { color: contourColors[index] } // Use Viridis color
+                name: `c = ${c}` // Label for the legend
             };
         });
 
         // Plotly layout and config for interactivity
         const layout = {
             title: 'Parametric Contour Plot with Viridis Palette',
-            xaxis: { title: 'X Axis' },
-            yaxis: { title: 'Y Axis' },
+            xaxis: { title: 'X Axis', zeroline: false },
+            yaxis: { title: 'Y Axis', zeroline: false },
             dragmode: 'pan', // Enable panning
         };
 
         const config = {
-            scrollZoom: true, // Enable zoom with mouse scroll
+            scrollZoom: true, // Enable zoom with mouse scroll or pinch
             responsive: true, // Adjust to viewport
         };
 
         // Render the plot
-        Plotly.newPlot('plot', contours, layout, config);
+        Plotly.newPlot('plot', traces, layout, config);
     </script>
 </body>
 </html>
