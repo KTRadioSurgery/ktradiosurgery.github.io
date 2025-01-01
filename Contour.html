@@ -19,34 +19,41 @@
     </div>
     <div id="plot" style="width: 100%; height: 80vh;"></div>
     <script>
+        // Define parametric range and list of 'c' values
+        const cValues = [3, 5, 7, 11]; // Specific c values for contours
         const tSteps = 100; // Number of steps for parametric equations
 
-        // Generate parametric x, y coordinates based on two parameters
-        const generateParametricData = (param1, param2) => {
+        // Viridis color palette (subset matching the number of contours)
+        const viridisColors = [
+            '#440154', '#482878', '#3E4989', '#31688E',
+            '#26828E', '#1F9D89', '#6CCE5A', '#B6DE2B'
+        ];
+        const contourColors = viridisColors.slice(0, cValues.length);
+
+        // Generate parametric x, y coordinates for a specific c
+        const generateParametricData = (c) => {
             const tArray = Array.from({ length: tSteps }, (_, i) => i / (tSteps - 1));
-            const x = tArray.map(t => Math.cos(2 * Math.PI * t) * (1 + param1 * 0.1)); // Formula using param1
-            const y = tArray.map(t => Math.sin(2 * Math.PI * t) * (1 + param2 * 0.1)); // Formula using param2
+            const x = tArray.map(t => Math.cos(2 * Math.PI * t) * (1 + c * 0.1)); // Example formula
+            const y = tArray.map(t => Math.sin(2 * Math.PI * t) * (1 + c * 0.1)); // Example formula
             return { x, y };
         };
 
-        // Initial parameter values
-        let param1 = 3;
-        let param2 = 3;
-
-        // Update plot with current parameter values
-        const updatePlot = () => {
-            const { x, y } = generateParametricData(param1, param2);
-            const trace = {
+        // Create traces for each value of c
+        const traces = cValues.map((c, index) => {
+            const { x, y } = generateParametricData(c);
+            return {
                 x: x,
                 y: y,
                 mode: 'lines',
                 line: {
-                    color: '#1f77b4',
+                    color: contourColors[index],
                     width: 2
                 },
-                name: `Param1: ${param1}, Param2: ${param2}` // Label for the legend
+                name: `c = ${c}` // Label for the legend
             };
+        });
 
+        
             const layout = {
                 title: 'Parametric Contour Plot with Sliders',
                 xaxis: { title: 'Todal Dose', zeroline: false },
