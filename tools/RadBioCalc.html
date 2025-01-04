@@ -243,8 +243,8 @@
             ctx.stroke();
 
             ctx.font = "12px Arial";
-            ctx.fillText("α/β", canvas.width - 40, canvas.height - 10);
-            ctx.fillText("Gy", 5, 20);
+            ctx.fillText("(α/β)", canvas.width - 40, canvas.height - 10);
+            ctx.fillText("(Gy)", 5, 40);
 
             const alphaBetaRange = Array.from({ length: 91 }, (_, i) => 1 + i * 0.1);
             const bedValues = alphaBetaRange.map(alphaBeta => totalDose * (1 + dosePerFraction / alphaBeta));
