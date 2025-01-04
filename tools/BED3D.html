@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D BED Plot</title>
+    <script src="https://cdn.plot.ly/plotly-2.25.2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            margin: 0;
+        }
+
+        #controls {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            padding: 20px;
+        }
+
+        #plot {
+            flex: 1;
+            height: 90vh;
+        }
+
+        .toggle-switch {
+            display: inline-flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .toggle-label {
+            cursor: pointer;
+            background-color: #ccc;
+            border-radius: 20px;
+            position: relative;
+            width: 120px;
+            height: 40px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .toggle-label:before {
+            content: 'EQD2';
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            color: #fff;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .toggle-label:after {
+            content: 'BED';
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: #fff;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .toggle-label .toggle-slider {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s;
+        }
+
+        input:checked + .toggle-label .toggle-slider {
+            left: 82px;
+        }
+
+        input:checked + .toggle-label:before {
+            opacity: 0.5;
+        }
+
+        input:checked + .toggle-label:after {
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <label for="doseRange">Total Dose Range:</label>
+        <div id="doseRange" style="margin: 10px 0;"></div>
+        <span id="doseRangeValue">0 - 100</span>
+
+        <label for="abRange">&alpha;/&beta; Range:</label>
+        <div id="abRange" style="margin: 10px 0;"></div>
+        <span id="abRangeValue">1 - 10</span>
+
+        <label for="fractions">Number of Fractions:</label>
+        <div id="fractions" style="margin: 10px 0;"></div>
+        <span id="fractionsValue">1</span>
+
+        <div class="toggle-switch">
+            <input type="checkbox" id="toggleMode">
+            <label class="toggle-label" for="toggleMode">
+                <div class="toggle-slider"></div>
+            </label>
+        </div>
+    </div>
+    <div id="plot"></div>
+    <script>
+        const DSteps = 50; // Number of dose steps
+        const NSteps = 50; // Number of n steps
+
+        let doseMin = 0; // Initial minimum dose value
+        let doseMax = 100; // Initial maximum dose value
+        let abMin = 1; // Initial minimum alpha/beta value
+        let abMax = 10; // Initial maximum alpha/beta value
+        let fractions = 1; // Initial number of fractions
+        let modeEQD2 = false; // Initial mode for BED or EQD2
+
+        // Generate 3D data
+        const generate3DData = (abMin, abMax, doseMin, doseMax, fractions, modeEQD2) => {
+            const x = Array.from({ length: NSteps + 1 }, (_, i) => abMin + i * (abMax - abMin) / NSteps);
+            const y = Array.from({ length: DSteps + 1 }, (_, i) => doseMin + i * (doseMax - doseMin) / DSteps);
+            const z = [];
+
+            for (let dose of y) {
+                const zRow = [];
+                for (let ab of x) {
+                    const dosePerFraction = dose / fractions;
+                    if (modeEQD2) {
+                        zRow.push(dosePerFraction * fractions * (dosePerFraction + ab) / (2 + ab));
+                    } else {
+                        zRow.push(dose * (1 + dose / (ab * fractions)));
+                    }
+                }
+                z.push(zRow);
+            }
+
+            return { x, y, z };
+        };
+
+        // Function to update the 3D plot
+        const updatePlot = () => {
+            const { x, y, z } = generate3DData(abMin, abMax, doseMin, doseMax, fractions, modeEQD2);
+
+            const trace = {
+                x: x,
+                y: y,
+                z: z,
+                type: 'surface',
+                colorscale: 'Viridis',
+                showscale: true,
+                hovertemplate: 'α/β: %{x}<br>Total Dose: %{y}<br>' + (modeEQD2 ? 'EQD2' : 'BED') + ': %{z}<extra></extra>'
+            };
+
+            const layout = {
+                title: modeEQD2 ? '3D EQD2 Plot' : '3D BED Plot',
+                scene: {
+                    xaxis: { title: '\u03B1/\u03B2' },
+                    yaxis: { title: 'Total Dose (D)' },
+                    zaxis: { title: modeEQD2 ? 'EQD2' : 'BED' }
+                }
+            };
+
+            Plotly.newPlot('plot', [trace], layout);
+        };
+
+        // Initialize dose range slider
+        const doseSlider = document.getElementById('doseRange');
+        noUiSlider.create(doseSlider, {
+            start: [0, 100],
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 100
+            },
+            step: 1
+        });
+
+        doseSlider.noUiSlider.on('update', (values) => {
+            doseMin = parseFloat(values[0]);
+            doseMax = parseFloat(values[1]);
+            document.getElementById('doseRangeValue').textContent = `${doseMin} - ${doseMax}`;
+            updatePlot();
+        });
+
+        // Initialize alpha/beta range slider
+        const abSlider = document.getElementById('abRange');
+        noUiSlider.create(abSlider, {
+            start: [1, 10],
+            connect: true,
+            range: {
+                'min': 1,
+                'max': 10
+            },
+            step: 0.1
+        });
+
+        abSlider.noUiSlider.on('update', (values) => {
+            abMin = parseFloat(values[0]);
+            abMax = parseFloat(values[1]);
+            document.getElementById('abRangeValue').textContent = `${abMin} - ${abMax}`;
+            updatePlot();
+        });
+
+        // Initialize fractions slider
+        const fractionsSlider = document.getElementById('fractions');
+        noUiSlider.create(fractionsSlider, {
+            start: 1,
+            connect: [true, false],
+            range: {
+                'min': 1,
+                'max': 35
+            },
+            step: 1
+        });
+
+        fractionsSlider.noUiSlider.on('update', (values) => {
+            fractions = parseInt(values[0]);
+            document.getElementById('fractionsValue').textContent = `${fractions}`;
+            updatePlot();
+        });
+
+        // Toggle mode for BED/EQD2
+        const toggleMode = document.getElementById('toggleMode');
+        toggleMode.addEventListener('change', (event) => {
+            modeEQD2 = event.target.checked;
+            updatePlot();
+        });
+
+        // Initial plot rendering
+        updatePlot();
+    </script>
+</body>
+</html>
+
