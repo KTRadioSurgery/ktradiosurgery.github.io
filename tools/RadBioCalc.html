@@ -120,58 +120,6 @@
     <div id="tooltip" class="tooltip"></div>
 
 
-
-
-    <div class="container">
-        <table id="doseTable">
-            <thead>
-                <tr>
-                    <th colspan="3" class="dose-group">Dose Details</th>
-                    <th colspan="4" class="eqd2-group">EQD2 (Gy<sub>α/β</sub>)</th>
-                    <th colspan="4" class="bed-group">BED (Gy<sub>α/β</sub>)</th>
-                    <th class="weighting-group">Forgiveness</th>
-                </tr>
-                <tr>
-                    <th class="dose-group">Dose per Fx (Gy)</th>
-                    <th class="dose-group">Total Fx</th>
-                    <th class="dose-group">Total Dose (Gy)</th>
-                    <th class="eqd2-group">α/β = 2</th>
-                    <th class="eqd2-group">α/β = 3</th>
-                    <th class="eqd2-group">α/β = 4</th>
-                    <th class="eqd2-group">α/β = 10</th>
-                    <th class="bed-group">α/β = 2</th>
-                    <th class="bed-group">α/β = 3</th>
-                    <th class="bed-group">α/β = 4</th>
-                    <th class="bed-group">α/β = 10</th>
-                    <th class="weighting-group">Weight</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Rows will be dynamically generated here -->
-            </tbody>
-            <tfoot>
-                <tr class="totals-row">
-                    <td colspan="3">Totals</td>
-                    <td id="total-eqd2-2">0.00</td>
-                    <td id="total-eqd2-3">0.00</td>
-                    <td id="total-eqd2-4">0.00</td>
-                    <td id="total-eqd2-10">0.00</td>
-                    <td id="total-bed-2">0.00</td>
-                    <td id="total-bed-3">0.00</td>
-                    <td id="total-bed-4">0.00</td>
-                    <td id="total-bed-10">0.00</td>
-                    <td id="total-weight">1.00</td>
-                </tr>
-            </tfoot>
-        </table>
-        <div id="plots">
-            <canvas id="plotCanvas" width="400" height="400"></canvas>
-        </div>
-    </div>
-    <div id="tooltip" class="tooltip"></div>
-
-
-
     
     <script>
         const alphaBetaValues = [2, 3, 4, 10];
