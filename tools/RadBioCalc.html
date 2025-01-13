@@ -71,7 +71,7 @@
         <h1>Radiotherapy Dose Calculator</h1>
     </header>
 
-    <div class="container">
+    <div class="container" id="TableContainer">
         <table id="doseTable">
             <thead>
                 <tr>
@@ -125,6 +125,21 @@
         const alphaBetaValues = [2, 3, 4, 10];
         let currentRow = null;
 
+        // Function to duplicate the table
+        function duplicateTable() {
+            const tableContainer = document.getElementById('tableContainer');
+            const table = document.getElementById('doseTable');
+            
+        // Loop to duplicate the table 2 more times (3 in total)
+            for (let i = 0; i < 2; i++) {
+                const clone = table.cloneNode(true);
+                tableContainer.appendChild(clone);
+            }
+        }
+
+        // Call the function to duplicate the tables
+        duplicateTable();
+        
         function calculateRow(row) {
             const dosePerFractionInput = row.querySelector(".dose-per-fraction");
             const numFractionsInput = row.querySelector(".num-fractions");
