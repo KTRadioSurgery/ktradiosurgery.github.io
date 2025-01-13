@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radiotherapy Dose Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #004E25;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+        }
+        table {
+            width: 70%;
+            border-collapse: collapse;
+            margin: 1rem auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 0.5rem;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .dose-group {
+            background-color: #add8e6;
+        }
+        .bed-group {
+            background-color: #ffa07a;
+        }
+        .eqd2-group {
+            background-color: #90ee90;
+        }
+        .totals-row {
+            background-color: #e6e6e6;
+            font-weight: bold;
+        }
+        #plots {
+            width: 30%;
+            margin: 1rem;
+        }
+        canvas {
+            display: block;
+            margin: 1rem auto;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 5px;
+            font-size: 12px;
+            display: none;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Radiotherapy Dose Calculator</h1>
+    </header>
+
+    <div class="container" id="TableContainer">
+        <table id="doseTable">
+            <thead>
+                <tr>
+                    <th colspan="3" class="dose-group">Dose Details</th>
+                    <th colspan="4" class="eqd2-group">EQD2 (Gy<sub>α/β</sub>)</th>
+                    <th colspan="4" class="bed-group">BED (Gy<sub>α/β</sub>)</th>
+                    <th class="weighting-group">Forgiveness</th>
+                </tr>
+                <tr>
+                    <th class="dose-group">Dose per Fx (Gy)</th>
+                    <th class="dose-group">Total Fx</th>
+                    <th class="dose-group">Total Dose (Gy)</th>
+                    <th class="eqd2-group">α/β = 2</th>
+                    <th class="eqd2-group">α/β = 3</th>
+                    <th class="eqd2-group">α/β = 4</th>
+                    <th class="eqd2-group">α/β = 10</th>
+                    <th class="bed-group">α/β = 2</th>
+                    <th class="bed-group">α/β = 3</th>
+                    <th class="bed-group">α/β = 4</th>
+                    <th class="bed-group">α/β = 10</th>
+                    <th class="weighting-group">Weight</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically generated here -->
+            </tbody>
+            <tfoot>
+                <tr class="totals-row">
+                    <td colspan="3">Totals</td>
+                    <td id="total-eqd2-2">0.00</td>
+                    <td id="total-eqd2-3">0.00</td>
+                    <td id="total-eqd2-4">0.00</td>
+                    <td id="total-eqd2-10">0.00</td>
+                    <td id="total-bed-2">0.00</td>
+                    <td id="total-bed-3">0.00</td>
+                    <td id="total-bed-4">0.00</td>
+                    <td id="total-bed-10">0.00</td>
+                    <td id="total-weight">1.00</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div id="plots">
+            <canvas id="plotCanvas" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <div id="tooltip" class="tooltip"></div>
+
+
+    
+    <script>
+        const alphaBetaValues = [2, 3, 4, 10];
+        let currentRow = null;
+      
+        function calculateRow(row) {
+            const dosePerFractionInput = row.querySelector(".dose-per-fraction");
+            const numFractionsInput = row.querySelector(".num-fractions");
+            const totalDoseInput = row.querySelector(".total-dose");
+            const weightInput = row.querySelector(".weighting");
+
+            let dosePerFraction = parseFloat(dosePerFractionInput.value) || 0;
+            let numFractions = parseInt(numFractionsInput.value) || 0;
+            let totalDose = parseFloat(totalDoseInput.value) || 0;
+            let weight = parseFloat(weightInput.value) || 1;
+
+            if (dosePerFractionInput === document.activeElement || numFractionsInput === document.activeElement) {
+                totalDose = dosePerFraction * numFractions;
+                totalDoseInput.value = totalDose.toFixed(2);
+            } else if (totalDoseInput === document.activeElement) {
+                if (numFractions > 0) {
+                    dosePerFraction = totalDose / numFractions;
+                    dosePerFractionInput.value = dosePerFraction.toFixed(2);
+                }
+            }
+
+            alphaBetaValues.forEach(alphaBeta => {
+                const bed = totalDose * (1 + dosePerFraction / alphaBeta) * weight;
+                const eqd2 = bed / (1 + 2 / alphaBeta) * weight;
+                row.querySelector(`.bed-${alphaBeta}`).textContent = bed.toFixed(2);
+                row.querySelector(`.eqd2-${alphaBeta}`).textContent = eqd2.toFixed(2);
+            });
+
+            updateTotals();
+            if (row === currentRow) plotRow(dosePerFraction, totalDose);
+        }
+
+        function updateTotals() {
+            const totals = {
+                bed: { 2: 0, 3: 0, 4: 0, 10: 0 },
+                eqd2: { 2: 0, 3: 0, 4: 0, 10: 0 }
+            };
+
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const weight = parseFloat(row.querySelector(".weighting").value) || 1;
+                alphaBetaValues.forEach(alphaBeta => {
+                    totals.bed[alphaBeta] += (parseFloat(row.querySelector(`.bed-${alphaBeta}`).textContent) || 0) * weight;
+                    totals.eqd2[alphaBeta] += (parseFloat(row.querySelector(`.eqd2-${alphaBeta}`).textContent) || 0) * weight;
+                });
+            });
+
+            alphaBetaValues.forEach(alphaBeta => {
+                document.getElementById(`total-bed-${alphaBeta}`).textContent = totals.bed[alphaBeta].toFixed(2);
+                document.getElementById(`total-eqd2-${alphaBeta}`).textContent = totals.eqd2[alphaBeta].toFixed(2);
+            });
+        }
+
+        function setupTable(rows) {
+            const tbody = document.querySelector("#doseTable tbody");
+            tbody.innerHTML = "";
+
+            for (let i = 0; i < rows; i++) {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td><input type="number" step="0.01" class="dose-per-fraction" onfocus="setCurrentRow(this)" oninput="calculateRow(this.parentNode.parentNode)" onkeydown="navigateWithArrows(event)"></td>
+                    <td><input type="number" class="num-fractions" onfocus="setCurrentRow(this)" oninput="calculateRow(this.parentNode.parentNode)" onkeydown="navigateWithArrows(event)"></td>
+                    <td><input type="number" step="0.01" class="total-dose" onfocus="setCurrentRow(this)" oninput="calculateRow(this.parentNode.parentNode)" onkeydown="navigateWithArrows(event)"></td>
+                    <td class="eqd2-2"></td>
+                    <td class="eqd2-3"></td>
+                    <td class="eqd2-4"></td>
+                    <td class="eqd2-10"></td>
+                    <td class="bed-2"></td>
+                    <td class="bed-3"></td>
+                    <td class="bed-4"></td>
+                    <td class="bed-10"></td>
+                    <td><input type="number" step="0.01" class="weighting" value="1" oninput="calculateRow(this.parentNode.parentNode)"></td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function setCurrentRow(input) {
+            currentRow = input.parentNode.parentNode;
+            const dosePerFraction = parseFloat(currentRow.querySelector(".dose-per-fraction").value) || 0;
+            const totalDose = parseFloat(currentRow.querySelector(".total-dose").value) || 0;
+            plotRow(dosePerFraction, totalDose);
+        }
+
+        function plotRow(dosePerFraction, totalDose) {
+            const canvas = document.getElementById("plotCanvas");
+            const ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const tooltip = document.getElementById("tooltip");
+            canvas.addEventListener("mousemove", event => {
+                const rect = canvas.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+                const alphaBetaRange = Array.from({ length: 91 }, (_, i) => 1 + i * 0.1);
+                const index = Math.round((x - 40) / (canvas.width - 50) * 90);
+                if (index >= 0 && index < alphaBetaRange.length) {
+                    const alphaBeta = alphaBetaRange[index];
+                    const bed = totalDose * (1 + dosePerFraction / alphaBeta);
+                    const eqd2 = bed / (1 + 2 / alphaBeta);
+                    tooltip.style.left = `${event.pageX + 10}px`;
+                    tooltip.style.top = `${event.pageY + 10}px`;
+                    tooltip.innerHTML = `α/β: ${alphaBeta.toFixed(1)}<br>BED: ${bed.toFixed(2)} Gy<br>EQD2: ${eqd2.toFixed(2)} Gy`;
+                    tooltip.style.display = "block";
+                } else {
+                    tooltip.style.display = "none";
+                }
+            });
+            canvas.addEventListener("mouseleave", () => {
+                tooltip.style.display = "none";
+            });
+
+            // Draw axes
+            ctx.beginPath();
+            ctx.moveTo(40, 10);
+            ctx.lineTo(40, canvas.height - 30);
+            ctx.lineTo(canvas.width - 10, canvas.height - 30);
+            ctx.strokeStyle = "black";
+            ctx.stroke();
+
+            ctx.font = "12px Arial";
+            ctx.fillText("(α/β)", canvas.width - 40, canvas.height - 10);
+            ctx.fillText("(Gy)", 5, 40);
+
+            const alphaBetaRange = Array.from({ length: 91 }, (_, i) => 1 + i * 0.1);
+            const bedValues = alphaBetaRange.map(alphaBeta => totalDose * (1 + dosePerFraction / alphaBeta));
+            const eqd2Values = alphaBetaRange.map((alphaBeta, i) => bedValues[i] / (1 + 2 / alphaBeta));
+
+            // Add grid lines
+            const maxValue = Math.max(...bedValues, ...eqd2Values);
+            const ticks = 5;
+            for (let i = 0; i <= ticks; i++) {
+                const y = canvas.height - 30 - (i / ticks) * (canvas.height - 40);
+                ctx.beginPath();
+                ctx.moveTo(40, y);
+                ctx.lineTo(canvas.width - 10, y);
+                ctx.strokeStyle = "#d3d3d3";
+                ctx.stroke();
+                ctx.fillStyle = "black";
+                ctx.fillText((maxValue * (i / ticks)).toFixed(1), 5, y + 5);
+            }
+
+            for (let alpha of [3, 6, 9]) {
+                const x = 40 + (alpha - 1) / 9 * (canvas.width - 50);
+                ctx.beginPath();
+                ctx.moveTo(x, 10);
+                ctx.lineTo(x, canvas.height - 30);
+                ctx.strokeStyle = "#d3d3d3";
+                ctx.stroke();
+                ctx.fillText(alpha, x - 10, canvas.height - 15);
+            }
+
+            // Plot BED
+            ctx.beginPath();
+            ctx.strokeStyle = "#ffa07a";
+            alphaBetaRange.forEach((alphaBeta, i) => {
+                const x = 40 + (alphaBeta - 1) / 9 * (canvas.width - 50);
+                const y = canvas.height - 30 - (bedValues[i] / maxValue) * (canvas.height - 40);
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Plot EQD2
+            ctx.beginPath();
+            ctx.strokeStyle = "#90ee90";
+            alphaBetaRange.forEach((alphaBeta, i) => {
+                const x = 40 + (alphaBeta - 1) / 9 * (canvas.width - 50);
+                const y = canvas.height - 30 - (eqd2Values[i] / maxValue) * (canvas.height - 40);
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+
+        setupTable(5);
+    </script>
+</body>
+</html>
