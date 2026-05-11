@@ -6,61 +6,36 @@
 <title>Neurocognitive Trace Test</title>
 
 <style>
-  body {
-    text-align: center;
-    font-family: Arial, sans-serif;
-  }
-
-  input {
-    padding: 8px;
-    margin: 10px;
-    width: 200px;
-  }
-
+  body { text-align:center; font-family:Arial,sans-serif; }
+  input { padding:8px; width:200px; }
   .trace-area {
-    width: 300px;
-    height: 300px;
-    margin: 20px auto;
-    border: 2px solid black;
-    position: relative;
-    touch-action: none;
-    background: #f5f5f5;
+    width:300px; height:300px;
+    margin:20px auto;
+    border:2px solid black;
+    background:#f5f5f5;
+    touch-action:none;
   }
-
-  canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-
-  button {
-    padding: 10px 20px;
-    margin: 10px;
-    font-size: 16px;
-  }
+  canvas { display:block; }
+  button { padding:10px 20px; font-size:16px; margin:10px; }
 </style>
 </head>
 
 <body>
 
 <h2 id="instruction"></h2>
-
-<input id="username" type="text" placeholder="Enter your name">
+<input id="username" placeholder="Enter your name">
 
 <div class="trace-area">
-  <canvas id="canvas"></canvas>
+  <canvas id="canvas" width="300" height="300"></canvas>
 </div>
 
 <button id="nextBtn">Next</button>
 <button id="sendBtn" style="display:none;">Send Data</button>
 
 <script>
-/* ================= SETUP ================= */
+/* ================= GLOBAL ================= */
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 300;
-canvas.height = 300;
-
 ctx.lineWidth = 3;
 ctx.lineCap = "round";
 
@@ -68,173 +43,165 @@ const instruction = document.getElementById("instruction");
 const nextBtn = document.getElementById("nextBtn");
 const sendBtn = document.getElementById("sendBtn");
 
-/* ================= STATE ================= */
-let state = "spiral"; // spiral → shape-trace → shape-memory → done
+let drawingEnabled = false;
 let drawing = false;
 let startTime = null;
-let hasDrawnMemory = false;
 
 const shapes = ["square","triangle","circle","star","hash"];
 let currentShape = null;
 
-const traceData = [];
+/* ================= STATE ================= */
+let phase = "spiral"; 
+// spiral → shape-trace → shape-memory → done
+
+const data = [];
 
 /* ================= STIMULI ================= */
-function drawSpiral() {
+function clearCanvas(){
   ctx.clearRect(0,0,300,300);
-  ctx.strokeStyle = "#bbb";
+}
+
+function drawSpiral(){
+  clearCanvas();
+  ctx.strokeStyle="#bbb";
   ctx.beginPath();
-  const cx = 150, cy = 150;
-  for (let t = 0; t < 8 * Math.PI; t += 0.05) {
-    const r = 2 + 4 * t;
-    const x = cx + r * Math.cos(t);
-    const y = cy + r * Math.sin(t);
-    t === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  const cx=150, cy=150;
+  for(let t=0;t<8*Math.PI;t+=0.05){
+    const r=2+4*t;
+    const x=cx+r*Math.cos(t);
+    const y=cy+r*Math.sin(t);
+    t===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
   }
   ctx.stroke();
 }
 
-function drawShape(name) {
-  ctx.clearRect(0,0,300,300);
-  ctx.strokeStyle = "#bbb";
+function drawShape(name){
+  clearCanvas();
+  ctx.strokeStyle="#bbb";
   ctx.beginPath();
 
-  if (name === "square") ctx.rect(60,60,180,180);
-
-  if (name === "triangle") {
-    ctx.moveTo(150,40);
-    ctx.lineTo(260,260);
-    ctx.lineTo(40,260);
-    ctx.closePath();
+  if(name==="square") ctx.rect(60,60,180,180);
+  if(name==="triangle"){
+    ctx.moveTo(150,40); ctx.lineTo(260,260);
+    ctx.lineTo(40,260); ctx.closePath();
   }
-
-  if (name === "circle") ctx.arc(150,150,90,0,2*Math.PI);
-
-  if (name === "hash") {
+  if(name==="circle") ctx.arc(150,150,90,0,2*Math.PI);
+  if(name==="hash"){
     ctx.moveTo(100,40); ctx.lineTo(100,260);
     ctx.moveTo(200,40); ctx.lineTo(200,260);
     ctx.moveTo(40,100); ctx.lineTo(260,100);
     ctx.moveTo(40,200); ctx.lineTo(260,200);
   }
-
-  if (name === "star") {
-    const cx = 150, cy = 150, r1 = 90, r2 = 40;
-    for (let i = 0; i < 10; i++) {
-      const r = i % 2 ? r2 : r1;
-      const a = Math.PI/2 + i * Math.PI / 5;
-      ctx.lineTo(cx + r * Math.cos(a), cy - r * Math.sin(a));
+  if(name==="star"){
+    const cx=150, cy=150, r1=90, r2=40;
+    for(let i=0;i<10;i++){
+      const r=i%2?r2:r1;
+      const a=Math.PI/2+i*Math.PI/5;
+      ctx.lineTo(cx+r*Math.cos(a), cy-r*Math.sin(a));
     }
     ctx.closePath();
   }
-
   ctx.stroke();
 }
 
 /* ================= DRAWING ================= */
-function getPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  const p = e.touches ? e.touches[0] : e;
-  return {
-    x: p.clientX - rect.left,
-    y: p.clientY - rect.top
-  };
+function pos(e){
+  const r=canvas.getBoundingClientRect();
+  const p=e.touches?e.touches[0]:e;
+  return {x:p.clientX-r.left,y:p.clientY-r.top};
 }
 
-function startDraw(e) {
-  drawing = true;
-  ctx.strokeStyle = "black";
+function record(x,y){
+  data.push({
+    phase,
+    stimulus: phase==="spiral"?"spiral":currentShape,
+    x,y,
+    t:performance.now()-startTime
+  });
+}
+
+function startDraw(e){
+  if(!drawingEnabled) return;
+  drawing=true;
+  ctx.strokeStyle="black";
   ctx.beginPath();
-
-  const {x,y} = getPos(e);
+  const {x,y}=pos(e);
   ctx.moveTo(x,y);
-
   startTime ??= performance.now();
   record(x,y);
 }
 
-function moveDraw(e) {
-  if (!drawing) return;
+function moveDraw(e){
+  if(!drawing) return;
   e.preventDefault();
-  const {x,y} = getPos(e);
+  const {x,y}=pos(e);
   ctx.lineTo(x,y);
   ctx.stroke();
   record(x,y);
 }
 
-function stopDraw() {
-  drawing = false;
-  if (state === "shape-memory") {
-    hasDrawnMemory = true;
-    sendBtn.style.display = "block";
-  }
+function stopDraw(){
+  drawing=false;
 }
 
-function record(x,y) {
-  traceData.push({
-    state,
-    stimulus: currentShape ?? "spiral",
-    x,y,
-    t: performance.now() - startTime
-  });
-}
-
-canvas.addEventListener("mousedown", startDraw);
-canvas.addEventListener("mousemove", moveDraw);
-canvas.addEventListener("mouseup", stopDraw);
-canvas.addEventListener("touchstart", startDraw);
-canvas.addEventListener("touchmove", moveDraw);
-canvas.addEventListener("touchend", stopDraw);
+/* ================= EVENTS ================= */
+canvas.addEventListener("mousedown",startDraw);
+canvas.addEventListener("mousemove",moveDraw);
+canvas.addEventListener("mouseup",stopDraw);
+canvas.addEventListener("touchstart",startDraw);
+canvas.addEventListener("touchmove",moveDraw);
+canvas.addEventListener("touchend",stopDraw);
 
 /* ================= FLOW ================= */
-function updateScreen() {
-  ctx.clearRect(0,0,300,300);
-  startTime = null;
+function updateUI(){
+  clearCanvas();
+  drawingEnabled=false;
+  startTime=null;
 
-  if (state === "spiral") {
-    instruction.innerText = "Phase 1: Trace the spiral";
+  if(phase==="spiral"){
+    instruction.innerText="Phase 1: Trace the spiral";
     drawSpiral();
-    nextBtn.style.display = "block";
-    sendBtn.style.display = "none";
+    drawingEnabled=true;
+    nextBtn.style.display="block";
+    sendBtn.style.display="none";
   }
 
-  if (state === "shape-trace") {
-    instruction.innerText = `Phase 2: Trace the ${currentShape}`;
+  if(phase==="shape-trace"){
+    instruction.innerText=`Phase 2: Trace the ${currentShape}`;
     drawShape(currentShape);
+    drawingEnabled=true;
   }
 
-  if (state === "shape-memory") {
-    instruction.innerText = `Draw the ${currentShape} from memory`;
-    nextBtn.style.display = "none";
-    ctx.clearRect(0,0,300,300);
+  if(phase==="shape-memory"){
+    instruction.innerText=`Draw the ${currentShape} from memory`;
+    drawingEnabled=true;
+    clearCanvas();
+    nextBtn.style.display="none";
+    sendBtn.style.display="block";
   }
 }
 
-nextBtn.onclick = () => {
-  if (state === "spiral") {
-    state = "shape-trace";
-    currentShape = shapes[Math.floor(Math.random()*shapes.length)];
-  } else if (state === "shape-trace") {
-    state = "shape-memory";
+nextBtn.onclick=()=>{
+  if(phase==="spiral"){
+    phase="shape-trace";
+    currentShape=shapes[Math.floor(Math.random()*shapes.length)];
+  } else if(phase==="shape-trace"){
+    phase="shape-memory";
   }
-  updateScreen();
+  updateUI();
 };
 
-sendBtn.onclick = () => {
-  const name = document.getElementById("username").value || "Anonymous";
-
-  const payload = {
-    name,
-    completed: new Date().toISOString(),
-    data: traceData
-  };
-
-  const body = encodeURIComponent(JSON.stringify(payload, null, 2));
-  window.location.href =
+/* ================= SEND ================= */
+sendBtn.onclick=()=>{
+  const name=document.getElementById("username").value||"Anonymous";
+  const payload={ name, completed:new Date().toISOString(), data };
+  const body=encodeURIComponent(JSON.stringify(payload));
+  window.location.href=
     `mailto:?subject=Neurocognitive Trace Test&body=${body}`;
 };
 
 /* ================= INIT ================= */
-updateScreen();
+updateUI();
 </script>
 
 </body>
