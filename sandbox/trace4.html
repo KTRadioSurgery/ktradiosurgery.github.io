@@ -278,8 +278,42 @@ nextBtn.onclick=()=>{
   updateUI();
 };
 
-/* Send button left unchanged per your request */
+/* Send results */
+  sendBtn.onclick = () => {
+  const name = document.getElementById("username").value || "Anonymous";
 
+  let emailText =
+`Participant: ${name}
+Completed: ${new Date().toISOString()}
+
+`;
+
+  const phaseLabels = {
+    "spiral": "PHASE 1 — SPIRAL TRACE",
+    "shape-trace": `PHASE 2 — SHAPE TRACE (${currentShape})`,
+    "shape-memory": `PHASE 3 — SHAPE MEMORY (${currentShape})`
+  };
+
+  let lastPhase = null;
+
+  data.forEach(pt => {
+    if (pt.phase !== lastPhase) {
+      lastPhase = pt.phase;
+      emailText +=
+`\n========================
+${phaseLabels[lastPhase]}
+========================
+`;
+    }
+
+    emailText += `{x: ${pt.x}, y: ${pt.y}, t: ${Math.round(pt.t)}}\n`;
+  });
+
+  const body = encodeURIComponent(emailText);
+
+  window.location.href =
+    `mailto:?subject=Neurocognitive Trace Test&body=${body}`;
+};
 </script>
 
 </body>
