@@ -1,103 +1,200 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trace Area</title>
-    <style>
-        .trace-area {
-            border: 2px solid #000;
-            width: 300px;
-            height: 300px;
-            margin: 20px auto;
-            position: relative;
-            touch-action: none;
-            background-color: #f0f0f0;
-        }
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Neurocognitive Trace Test</title>
+
+<style>
+  body { text-align: center; font-family: sans-serif; }
+  .trace-area {
+    border: 2px solid #000;
+    width: 300px;
+    height: 300px;
+    margin: 20px auto;
+    position: relative;
+    touch-action: none;
+    background-color: #f5f5f5;
+  }
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
 </head>
-<body style="text-align: center;">
-    <h1 style="text-align: center;">Trace in the Square</h1>
-    <label for="username" style="display: block; margin-bottom: 10px;">Enter your name: </label>
-    <input type="text" id="username" placeholder="Your name here" style="margin-bottom: 20px;">
-    <div class="trace-area">
-        <canvas id="traceCanvas"></canvas>
-    </div>
-    <button id="sendEmailButton" style="display: block; margin: 20px auto;">Send Trace Data</button>
-    <script>
-        const traceCanvas = document.getElementById('traceCanvas');
-        const context = traceCanvas.getContext('2d');
-        let isDrawing = false;
-        let traceData = [];
 
-        // Set up canvas dimensions
-        function setupCanvas() {
-            traceCanvas.width = traceCanvas.parentElement.clientWidth;
-            traceCanvas.height = traceCanvas.parentElement.clientHeight;
-            context.lineWidth = 3;
-            context.strokeStyle = 'blue';
-            context.lineCap = 'round';
-        }
+<body>
 
-        setupCanvas();
+<h2 id="instruction">Phase 1: Trace the spiral</h2>
+<input id="username" placeholder="Enter your name"/><br/>
 
-        function startDrawing(event) {
-            isDrawing = true;
-            const { offsetX, offsetY } = getEventPosition(event);
-            context.beginPath();
-            context.moveTo(offsetX, offsetY);
-            recordGesture(offsetX, offsetY);
-        }
+<div class="trace-area">
+  <canvas id="canvas"></canvas>
+</div>
 
-        function draw(event) {
-            if (!isDrawing) return;
-            const { offsetX, offsetY } = getEventPosition(event);
-            context.lineTo(offsetX, offsetY);
-            context.stroke();
-            recordGesture(offsetX, offsetY);
-        }
+<button id="nextButton">Next</button>
+<button id="sendButton">Send Data</button>
 
-        function stopDrawing() {
-            isDrawing = false;
-            context.closePath();
-        }
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-        function recordGesture(offsetX, offsetY) {
-            traceData.push({ x: offsetX, y: offsetY, time: new Date().getTime() });
-        }
+canvas.width = canvas.parentElement.clientWidth;
+canvas.height = canvas.parentElement.clientHeight;
 
-        function getEventPosition(event) {
-            if (event.touches && event.touches.length > 0) {
-                const touch = event.touches[0];
-                const rect = traceCanvas.getBoundingClientRect();
-                return { offsetX: touch.clientX - rect.left, offsetY: touch.clientY - rect.top };
-            } else {
-                return { offsetX: event.offsetX, offsetY: event.offsetY };
-            }
-        }
+ctx.lineWidth = 3;
+ctx.lineCap = "round";
 
-        traceCanvas.addEventListener('mousedown', startDrawing);
-        traceCanvas.addEventListener('mousemove', draw);
-        traceCanvas.addEventListener('mouseup', stopDrawing);
-        traceCanvas.addEventListener('mouseleave', stopDrawing);
+let drawing = false;
+let phase = 1;
+let condition = "trace";
+let stimulus = "spiral";
+let startTime = null;
 
-        traceCanvas.addEventListener('touchstart', startDrawing);
-        traceCanvas.addEventListener('touchmove', draw);
-        traceCanvas.addEventListener('touchend', stopDrawing);
+const data = [];
 
-        // Send trace data via email
-        const sendEmailButton = document.getElementById('sendEmailButton');
-        sendEmailButton.addEventListener('click', () => {
-            const emailBody = `Trace Data:%0A${JSON.stringify(traceData)}`;
-            window.location.href = `mailto:?subject=Trace Data&body=${emailBody}`;
-        });
-    </script>
+/* ---------- STIMULI ---------- */
+
+function drawSpiral() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle = "#bbb";
+  ctx.beginPath();
+  const cx = canvas.width/2;
+  const cy = canvas.height/2;
+  let a = 2, b = 4;
+
+  for (let t = 0; t < 8 * Math.PI; t += 0.05) {
+    let r = a + b * t;
+    let x = cx + r * Math.cos(t);
+    let y = cy + r * Math.sin(t);
+    t === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+}
+
+function drawShape(name) {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle = "#bbb";
+  ctx.beginPath();
+  const w = canvas.width;
+  const h = canvas.height;
+
+  switch(name) {
+    case "square":
+      ctx.rect(60,60,180,180);
+      break;
+    case "triangle":
+      ctx.moveTo(w/2,40);
+      ctx.lineTo(260,260);
+      ctx.lineTo(40,260);
+      ctx.closePath();
+      break;
+    case "circle":
+      ctx.arc(w/2,h/2,90,0,2*Math.PI);
+      break;
+    case "hash":
+      ctx.moveTo(100,40); ctx.lineTo(100,260);
+      ctx.moveTo(200,40); ctx.lineTo(200,260);
+      ctx.moveTo(40,100); ctx.lineTo(260,100);
+      ctx.moveTo(40,200); ctx.lineTo(260,200);
+      break;
+    case "star":
+      const cx = w/2, cy = h/2, r1 = 90, r2 = 40;
+      for(let i=0;i<10;i++){
+        const r = i%2 ? r2 : r1;
+        const a = Math.PI/2 + i*Math.PI/5;
+        ctx.lineTo(cx+r*Math.cos(a), cy-r*Math.sin(a));
+      }
+      ctx.closePath();
+  }
+  ctx.stroke();
+}
+
+/* ---------- DRAWING ---------- */
+
+function getPos(e){
+  const rect = canvas.getBoundingClientRect();
+  const p = e.touches ? e.touches[0] : e;
+  return { x: p.clientX-rect.left, y: p.clientY-rect.top };
+}
+
+function start(e){
+  drawing = true;
+  const {x,y} = getPos(e);
+  ctx.strokeStyle = "black";
+  ctx.beginPath();
+  ctx.moveTo(x,y);
+  startTime ??= performance.now();
+  record(x,y);
+}
+
+function move(e){
+  if(!drawing) return;
+  e.preventDefault();
+  const {x,y} = getPos(e);
+  ctx.lineTo(x,y);
+  ctx.stroke();
+  record(x,y);
+}
+
+function stop(){
+  drawing = false;
+}
+
+function record(x,y){
+  data.push({
+    phase,
+    condition,
+    stimulus,
+    x,y,
+    t: performance.now()-startTime
+  });
+}
+
+/* ---------- EVENTS ---------- */
+
+canvas.addEventListener("mousedown",start);
+canvas.addEventListener("mousemove",move);
+canvas.addEventListener("mouseup",stop);
+canvas.addEventListener("touchstart",start);
+canvas.addEventListener("touchmove",move);
+canvas.addEventListener("touchend",stop);
+
+/* ---------- PHASE CONTROL ---------- */
+
+const shapes = ["square","triangle","circle","star","hash"];
+let currentShape = null;
+
+document.getElementById("nextButton").onclick = ()=>{
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  startTime = null;
+
+  if(phase === 1){
+    phase = 2;
+    currentShape = shapes[Math.floor(Math.random()*shapes.length)];
+    stimulus = currentShape;
+    condition = "trace";
+    document.getElementById("instruction").innerText =
+      `Trace the ${currentShape}`;
+    drawShape(currentShape);
+  }
+  else if(condition === "trace"){
+    condition = "memory";
+    document.getElementById("instruction").innerText =
+      `Draw the ${currentShape} from memory`;
+  }
+};
+
+/* ---------- SEND ---------- */
+
+document.getElementById("sendButton").onclick = ()=>{
+  const name = document.getElementById("username").value;
+  const body = encodeURIComponent(JSON.stringify({name,data},null,2));
+  location.href = `mailto:?subject=Trace Test&body=${body}`;
+};
+
+drawSpiral();
+</script>
+
 </body>
 </html>
