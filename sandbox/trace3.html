@@ -186,14 +186,39 @@ nextBtn.onclick = () => {
 /* ---------- SEND ---------- */
 sendBtn.onclick = () => {
   const name = document.getElementById("username").value || "Anonymous";
-  const payload = {
-    name,
-    completed: new Date().toISOString(),
-    data
+  const completed = new Date().toISOString();
+
+  let emailText = 
+`Participant: ${name}
+Completed: ${completed}
+
+`;
+
+  const phaseLabels = {
+    "spiral": "PHASE 1 — SPIRAL TRACE",
+    "shape-trace": `PHASE 2 — SHAPE TRACE (${currentShape.toUpperCase()})`,
+    "shape-memory": `PHASE 3 — SHAPE MEMORY (${currentShape.toUpperCase()})`
   };
-  const body = encodeURIComponent(JSON.stringify(payload));
+
+  let currentPhase = null;
+
+  data.forEach(point => {
+    if (point.phase !== currentPhase) {
+      currentPhase = point.phase;
+      emailText +=
+`\n========================
+${phaseLabels[currentPhase]}
+========================
+`;
+    }
+
+    emailText += `{x: ${point.x}, y: ${point.y}, t: ${Math.round(point.t)}}\n`;
+  });
+
+  const body = encodeURIComponent(emailText);
+
   window.location.href =
-    `mailto:?subject=Neuro Trace Test&body=${body}`;
+    `mailto:?subject=Neurocognitive Trace Test&body=${body}`;
 };
 
 /* ---------- INIT ---------- */
