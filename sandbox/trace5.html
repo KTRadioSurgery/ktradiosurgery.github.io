@@ -278,42 +278,92 @@ nextBtn.onclick=()=>{
   updateUI();
 };
 
-/* Send results */
-  sendBtn.onclick = () => {
-  const name = document.getElementById("username").value || "Anonymous";
+/* Download results as JSON */
+sendBtn.onclick = () => {
+  const participant =
+    document.getElementById("username").value.trim() || "Anonymous";
 
-  let emailText =
-`Participant: ${name}
-Completed: ${new Date().toISOString()}
-
-`;
-
-  const phaseLabels = {
-    "spiral": "PHASE 1 — SPIRAL TRACE",
-    "shape-trace": `PHASE 2 — SHAPE TRACE (${currentShape})`,
-    "shape-memory": `PHASE 3 — SHAPE MEMORY (${currentShape})`
+  const result = {
+    testName: "Neurocognitive Trace Test",
+    participant: participant,
+    completedAt: new Date().toISOString(),
+    selectedShape: currentShape,
+    canvas: {
+      width: canvas.width,
+      height: canvas.height
+    },
+    points: data.map(pt => ({
+      phase: pt.phase,
+      stimulus: pt.stimulus,
+      x: pt.x,
+      y: pt.y,
+      t: Math.round(pt.t)
+    }))
   };
 
-  let lastPhase = null;
+  const jsonText = JSON.stringify(result, null, 2);
 
-  data.forEach(pt => {
-    if (pt.phase !== lastPhase) {
-      lastPhase = pt.phase;
-      emailText +=
-`\n========================
-${phaseLabels[lastPhase]}
-========================
-`;
-    }
+  const blob = new Blob(
+    [jsonText],
+    { type: "application/json" }
+  );
 
-    emailText += `{x: ${pt.x}, y: ${pt.y}, t: ${Math.round(pt.t)}}\n`;
-  });
+  const downloadUrl = URL.createObjectURL(blob);
 
-  const body = encodeURIComponent(emailText);
+  const safeParticipant =
+    participant.replace(/[^a-zA-Z0-9_-]/g, "_");
 
-  window.location.href =
-    `mailto:?subject=Neurocognitive Trace Test&body=${body}`;
+  const timestamp =
+    new Date().toISOString().replace(/[:.]/g, "-");
+
+  const filename =
+    `neurocognitive-trace_${safeParticipant}_${timestamp}.json`;
+
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = filename;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(downloadUrl);
+
+  instruction.textContent =
+    "Data downloaded successfully.";
 };
+
+const jsonText = JSON.stringify(result, null, 2);
+
+  const blob = new Blob(
+    [jsonText],
+    { type: "application/json" }
+  );
+
+  const downloadUrl = URL.createObjectURL(blob);
+
+  const safeParticipant =
+    participant.replace(/[^a-zA-Z0-9_-]/g, "_");
+
+  const timestamp =
+    new Date().toISOString().replace(/[:.]/g, "-");
+
+  const filename =
+    `neurocognitive-trace_${safeParticipant}_${timestamp}.json`;
+
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.download = filename;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(downloadUrl);
+
+  instruction.textContent =
+    "Data downloaded successfully.";
+};  
 </script>
 
 </body>
