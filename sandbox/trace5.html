@@ -333,37 +333,6 @@ sendBtn.onclick = () => {
     "Data downloaded successfully.";
 };
 
-const jsonText = JSON.stringify(result, null, 2);
-
-  const blob = new Blob(
-    [jsonText],
-    { type: "application/json" }
-  );
-
-  const downloadUrl = URL.createObjectURL(blob);
-
-  const safeParticipant =
-    participant.replace(/[^a-zA-Z0-9_-]/g, "_");
-
-  const timestamp =
-    new Date().toISOString().replace(/[:.]/g, "-");
-
-  const filename =
-    `neurocognitive-trace_${safeParticipant}_${timestamp}.json`;
-
-  const link = document.createElement("a");
-  link.href = downloadUrl;
-  link.download = filename;
-
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-
-  URL.revokeObjectURL(downloadUrl);
-
-  instruction.textContent =
-    "Data downloaded successfully.";
-};  
 </script>
 
 </body>
